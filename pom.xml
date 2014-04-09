@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Project:  jParley-Core
+    Outline:  jParley framework core components
+
+    File:     pom.xml
+    Folder:   /
+    Revision: 1.02, 09 April 2014
+    Created:  05 March 2014
+    Author:   Ilya Gubarev
+
+    Copyright (c) 2014 Soulware Labs, Ltd.
+    Contact information is available at http://www.soulwarelabs.com
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.soulwarelabs.jparley</groupId>
+    <artifactId>jparley-core</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>jParley-Core</name>
+    <description>jParley framework core components</description>
+    <url>http://www.soulwarelabs.com/products/frameworks/jparley</url>
+    <inceptionYear>2014</inceptionYear>
+
+    <organization>
+        <name>Soulware Labs</name>
+        <url>http://www.soulwarelabs.com</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Ilya Gubarev</name>
+            <email>mail@ilyagubarev.com</email>
+            <url>http://www.ilyagubarev.com</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <versions.java.source>1.6</versions.java.source>
+        <versions.java.target>1.6</versions.java.target>
+        <versions.libs.jparley.utility>1.0.0-SNAPSHOT</versions.libs.jparley.utility>
+        <versions.plugins.compiler>3.1</versions.plugins.compiler>
+        <versions.plugins.javadoc>2.9.1</versions.plugins.javadoc>
+        <versions.plugins.source>2.2.1</versions.plugins.source>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.soulwarelabs.jparley</groupId>
+            <artifactId>jparley-utility</artifactId>
+            <version>${versions.libs.jparley.utility}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${versions.plugins.compiler}</version>
+                <configuration>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
+                    <source>${versions.java.source}</source>
+                    <target>${versions.java.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${versions.plugins.javadoc}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>                
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${versions.plugins.source}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

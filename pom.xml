@@ -6,7 +6,7 @@
 
     File:     pom.xml
     Folder:   /
-    Revision: 1.02, 09 April 2014
+    Revision: 1.03, 14 April 2014
     Created:  05 March 2014
     Author:   Ilya Gubarev
 
@@ -70,8 +70,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <versions.java.source>1.6</versions.java.source>
-        <versions.java.target>1.6</versions.java.target>
+        <versions.java.source>1.5</versions.java.source>
+        <versions.java.target>1.5</versions.java.target>
         <versions.libs.jparley.utility>1.0.0-SNAPSHOT</versions.libs.jparley.utility>
         <versions.plugins.compiler>3.1</versions.plugins.compiler>
         <versions.plugins.javadoc>2.9.1</versions.plugins.javadoc>
@@ -83,6 +83,7 @@
             <groupId>com.soulwarelabs.jparley</groupId>
             <artifactId>jparley-utility</artifactId>
             <version>${versions.libs.jparley.utility}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -83,7 +83,6 @@
             <groupId>com.soulwarelabs.jparley</groupId>
             <artifactId>jparley-utility</artifactId>
             <version>${versions.libs.jparley.utility}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

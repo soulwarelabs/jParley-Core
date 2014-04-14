@@ -53,16 +53,38 @@ public class StandardExecutor implements Executor, Serializable {
      * Creates a new instance of standard executor.
      *
      * @param pool SQL database connection pool.
-     * @throws IllegalArgumentException if specified connection pool is null.
      *
      * @see ConnectionPool
      *
      * @since v1.0
      */
     public StandardExecutor(ConnectionPool pool) {
-        if (pool == null) {
-            throw new IllegalArgumentException("connection pool is null");
-        }
+        this.pool = pool;
+    }
+
+    /**
+     * Gets SQL database connection pool.
+     *
+     * @return SQL database connection pool.
+     *
+     * @see ConnectionPool
+     *
+     * @since v1.0
+     */
+    public ConnectionPool getPool() {
+        return pool;
+    }
+
+    /**
+     * Sets a new SQL database connection pool.
+     *
+     * @param pool SQL database connection pool.
+     *
+     * @see ConnectionPool
+     *
+     * @since v1.0
+     */
+    public void setPool(ConnectionPool pool) {
         this.pool = pool;
     }
 
@@ -71,7 +93,7 @@ public class StandardExecutor implements Executor, Serializable {
         Boolean autoCommit = null;
         Connection connection = null;
         try {
-            connection = pool.getConnection();
+            connection = getPooledConnection();
             autoCommit = connection.getAutoCommit();
             connection.setAutoCommit(false);
             for (Subroutine subroutine : subroutines) {
@@ -96,8 +118,8 @@ public class StandardExecutor implements Executor, Serializable {
             throws SQLException {
         try {
             if (parameters != null) {
-                for (int i = 0; i < parameters.length; i++) {
-                    function.input(i + 2, parameters[i]);
+                for (Object parameter : parameters) {
+                    function.input(parameter);
                 }
             }
             call((Subroutine) function);
@@ -105,5 +127,13 @@ public class StandardExecutor implements Executor, Serializable {
         } finally {
             function.reset();
         }
+    }
+
+    private Connection getPooledConnection() throws SQLException {
+        ConnectionPool connectionPool = getPool();
+        if (connectionPool == null) {
+            throw new SQLException("connection pool is null");
+        }
+        return connectionPool.getConnection();
     }
 }

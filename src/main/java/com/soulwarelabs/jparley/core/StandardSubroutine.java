@@ -70,66 +70,70 @@ public class StandardSubroutine implements Serializable, Subroutine {
 
     @Override
     public void in(int index, Box<?> value) {
-        manager.in(index, value, null, null);
+        getManager().in(index, value, null, null);
     }
 
     @Override
     public void in(int index, Object value) {
-        manager.in(index, new Box<Object>(value), null, null);
+        getManager().in(index, new Box<Object>(value), null, null);
     }
 
     @Override
     public void in(String name, Box<?> value) {
-        manager.in(name, value, null, null);
+        getManager().in(name, value, null, null);
     }
 
     @Override
     public void in(String name, Object value) {
-        manager.in(name, new Box<Object>(value), null, null);
+        getManager().in(name, new Box<Object>(value), null, null);
     }
 
     @Override
     public void in(int index, Box<?> value, Integer type) {
-        manager.in(index, value, type, null);
+        getManager().in(index, value, type, null);
     }
 
     @Override
     public void in(int index, Object value, Integer type) {
-        manager.in(index, new Box<Object>(value), type, null);
+        getManager().in(index, new Box<Object>(value), type, null);
     }
 
     @Override
     public void in(String name, Box<?> value, Integer type) {
-        manager.in(name, value, type, null);
+        getManager().in(name, value, type, null);
     }
 
     @Override
     public void in(String name, Object value, Integer type) {
-        manager.in(name, new Box<Object>(value), type, null);
+        getManager().in(name, new Box<Object>(value), type, null);
     }
 
     @Override
     public void in(int index, Box<?> value, Converter encoder) {
-        manager.in(index, value, null, encoder);
+        getManager().in(index, value, null, encoder);
     }
 
     @Override
     public void in(int index, Object value, Converter encoder) {
-        manager.in(index, new Box<Object>(value), null, encoder);
+        getManager().in(index, new Box<Object>(value), null, encoder);
     }
 
     @Override
     public void in(String name, Box<?> value, Converter encoder) {
-        manager.in(name, value, null, encoder);
+        getManager().in(name, value, null, encoder);
     }
 
     @Override
     public void in(String name, Object value, Converter encoder) {
-        manager.in(name, new Box<Object>(value), null, encoder);
+        getManager().in(name, new Box<Object>(value), null, encoder);
     }
 
     @Override
     public void reset() {
-        manager.removeAll();
+        getManager().removeAll();
+    }
+
+    protected Manager getManager() {
+        return manager;
     }
 }

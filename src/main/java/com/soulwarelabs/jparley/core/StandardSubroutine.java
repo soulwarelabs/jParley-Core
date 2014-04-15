@@ -50,8 +50,9 @@ public class StandardSubroutine implements Serializable, Subroutine {
     private String name;
     private Manager manager;
 
-    public StandardSubroutine() {
-        manager = new Manager();
+    public StandardSubroutine(String name) {
+        this.name = name;
+        this.manager = new Manager();
     }
 
     public String getName() {

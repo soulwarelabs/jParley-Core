@@ -4,7 +4,7 @@
  *
  * File:     StandardExecutor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.05, 15 April 2014
+ * Revision: 1.06, 15 April 2014
  * Created:  08 February 2014
  * Author:   Ilya Gubarev
  *
@@ -93,12 +93,18 @@ public class StandardExecutor implements Executor, Serializable {
         Boolean autoCommit = null;
         Connection connection = null;
         try {
-            connection = getPooledConnection();
+            ConnectionPool connectionPool = getPool();
+            if (connectionPool == null) {
+                throw new SQLException("connection pool is null");
+            }
+            connection = connectionPool.getConnection();
             autoCommit = connection.getAutoCommit();
             connection.setAutoCommit(false);
+            before(connection);
             for (Subroutine subroutine : subroutines) {
                 subroutine.execute(connection);
             }
+            after(connection);
             connection.commit();
         } finally {
             if (connection != null) {
@@ -129,11 +135,11 @@ public class StandardExecutor implements Executor, Serializable {
         }
     }
 
-    private Connection getPooledConnection() throws SQLException {
-        ConnectionPool connectionPool = getPool();
-        if (connectionPool == null) {
-            throw new SQLException("connection pool is null");
-        }
-        return connectionPool.getConnection();
+    protected void after(Connection connection) throws SQLException {
+
+    }
+
+    protected void before(Connection connection) throws SQLException {
+
     }
 }

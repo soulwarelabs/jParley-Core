@@ -4,7 +4,7 @@
  *
  * File:     StandardExecutor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.06, 15 April 2014
+ * Revision: 1.07, 15 April 2014
  * Created:  08 February 2014
  * Author:   Ilya Gubarev
  *
@@ -33,6 +33,7 @@ import com.soulwarelabs.jcommons.sql.ConnectionPool;
 
 import com.soulwarelabs.jparley.Executor;
 import com.soulwarelabs.jparley.Function;
+import com.soulwarelabs.jparley.Interceptor;
 import com.soulwarelabs.jparley.Subroutine;
 
 /**
@@ -48,6 +49,8 @@ import com.soulwarelabs.jparley.Subroutine;
 public class StandardExecutor implements Executor, Serializable {
 
     private ConnectionPool pool;
+    private Interceptor postInterceptor;
+    private Interceptor preInterceptor;
 
     /**
      * Creates a new instance of standard executor.
@@ -86,6 +89,58 @@ public class StandardExecutor implements Executor, Serializable {
      */
     public void setPool(ConnectionPool pool) {
         this.pool = pool;
+    }
+
+    /**
+     * Gets SQL workflow post-execution interceptor.
+     *
+     * @return SQL workflow interceptor.
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
+    public Interceptor getPostInterceptor() {
+        return postInterceptor;
+    }
+
+    /**
+     * Sets a new SQL workflow post-execution interceptor.
+     *
+     * @param postInterceptor SQL workflow interceptor.
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
+    public void setPostInterceptor(Interceptor postInterceptor) {
+        this.postInterceptor = postInterceptor;
+    }
+
+    /**
+     * Gets SQL workflow pre-execution interceptor.
+     *
+     * @return SQL workflow interceptor.
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
+    public Interceptor getPreInterceptor() {
+        return preInterceptor;
+    }
+
+    /**
+     * Sets a new SQL workflow pre-execution interceptor.
+     *
+     * @param preInterceptor SQL workflow interceptor.
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
+    public void setPreInterceptor(Interceptor preInterceptor) {
+        this.preInterceptor = preInterceptor;
     }
 
     @Override
@@ -135,11 +190,38 @@ public class StandardExecutor implements Executor, Serializable {
         }
     }
 
+    /**
+     * Intercepts SQL workflow after subroutines are executed.
+     *
+     * @param connection SQL database connection.
+     * @throws SQLException if error occurs while perform interception.
+     *
+     * @see #getPostInterceptor()
+     *
+     * @since v1.0
+     */
     protected void after(Connection connection) throws SQLException {
-
+        intercept(connection, getPostInterceptor());
     }
 
+    /**
+     * Intercepts SQL workflow before subroutines are executed.
+     *
+     * @param connection SQL database connection.
+     * @throws SQLException if error occurs while perform interception.
+     *
+     * @see #getPreInterceptor()
+     *
+     * @since v1.0
+     */
     protected void before(Connection connection) throws SQLException {
+        intercept(connection, getPreInterceptor());
+    }
 
+    private void intercept(Connection connection, Interceptor interceptor)
+            throws SQLException {
+        if (interceptor != null) {
+            interceptor.perform(connection);
+        }
     }
 }

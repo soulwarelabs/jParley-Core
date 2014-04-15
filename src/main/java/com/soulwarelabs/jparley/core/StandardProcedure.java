@@ -26,53 +26,74 @@
 package com.soulwarelabs.jparley.core;
 
 import com.soulwarelabs.jcommons.Box;
+import com.soulwarelabs.jcommons.Optional;
 
 import com.soulwarelabs.jparley.Converter;
 import com.soulwarelabs.jparley.Procedure;
 
+/**
+ * Standard SQL stored procedure.
+ *
+ * @see Procedure
+ * @see StandardSubroutine
+ *
+ * @since v1.0
+ *
+ * @author Ilya Gubarev
+ * @version 15 April 2014
+ */
 public class StandardProcedure extends StandardSubroutine implements Procedure {
 
+    /**
+     * Creates a new instance of standard procedure.
+     *
+     * @param name procedure name.
+     *
+     * @since v1.0
+     */
     public StandardProcedure(String name) {
         super(name);
     }
 
     @Override
     public Box<Object> out(int index, int type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return getManager().out(index, type, null, null);
     }
 
     @Override
     public Box<Object> out(String name, int type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return getManager().out(name, type, null, null);
     }
 
     @Override
-    public Box<Object> out(int index, int type, String struct) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Box<Object> out(int index, int type, @Optional String struct) {
+        return getManager().out(index, type, struct, null);
     }
 
     @Override
-    public Box<Object> out(String name, int type, String struct) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Box<Object> out(String name, int type, @Optional String struct) {
+        return getManager().out(name, type, struct, null);
     }
 
     @Override
-    public Box<Object> out(int index, int type, Converter decoder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Box<Object> out(int index, int type, @Optional Converter decoder) {
+        return getManager().out(index, type, null, decoder);
     }
 
     @Override
-    public Box<Object> out(String name, int type, Converter decoder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Box<Object> out(String name, int type, @Optional Converter decoder) {
+        return getManager().out(name, type, null, decoder);
     }
 
     @Override
-    public Box<Object> out(int index, int type, String struct, Converter decoder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Box<Object> out(int index, int type, @Optional String struct,
+            @Optional Converter decoder) {
+        return getManager().out(index, type, struct, decoder);
     }
 
     @Override
-    public Box<Object> out(String name, int type, String struct, Converter decoder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Box<Object> out(String name, int type, @Optional String struct,
+            @Optional Converter decoder) {
+        return getManager().out(name, type, struct, decoder);
     }
 }

@@ -4,7 +4,7 @@
  *
  * File:     StandardExecutor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.08, 16 April 2014
+ * Revision: 1.09, 16 April 2014
  * Created:  08 February 2014
  * Author:   Ilya Gubarev
  *
@@ -43,9 +43,50 @@ import com.soulwarelabs.jparley.Subroutine;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 18 April 2014
+ * @version 16 April 2014
  */
 public class StandardExecutor implements Executor, Serializable {
+
+    /**
+     * Executes specified SQL stored subroutines in a single transaction.
+     *
+     * @param connection SQL database connection.
+     * @param subroutines SQL subroutines to be executed.
+     * @throws SQLException if error occurs while executing the subroutines.
+     *
+     * @see Subroutine
+     *
+     * @since v1.0
+     */
+    public static void call(Connection connection, Subroutine ... subroutines)
+            throws SQLException {
+        call(null, connection, subroutines);
+    }
+
+    private static void call(StandardExecutor executor, Connection connection,
+            Subroutine ... subroutines) throws SQLException {
+        Boolean autoCommit = null;
+        try {
+            autoCommit = connection.getAutoCommit();
+            connection.setAutoCommit(false);
+            if (executor != null) {
+                executor.before(connection);
+            }
+            for (Subroutine subroutine : subroutines) {
+                subroutine.execute(connection);
+            }
+            if (executor != null) {
+                executor.after(connection);
+            }
+            connection.commit();
+        } finally {
+            if (connection != null) {
+                if (autoCommit != null) {
+                    connection.setAutoCommit(autoCommit);
+                }
+            }
+        }
+    }
 
     private ConnectionPool pool;
     private Interceptor postInterceptor;
@@ -151,7 +192,6 @@ public class StandardExecutor implements Executor, Serializable {
 
     @Override
     public void call(Subroutine ... subroutines) throws SQLException {
-        Boolean autoCommit = null;
         Connection connection = null;
         try {
             ConnectionPool connectionPool = getPool();
@@ -159,23 +199,10 @@ public class StandardExecutor implements Executor, Serializable {
                 throw new SQLException("connection pool is null");
             }
             connection = connectionPool.getConnection();
-            autoCommit = connection.getAutoCommit();
-            connection.setAutoCommit(false);
-            before(connection);
-            for (Subroutine subroutine : subroutines) {
-                subroutine.execute(connection);
-            }
-            after(connection);
-            connection.commit();
+            call(this, connection, subroutines);
         } finally {
             if (connection != null) {
-                try {
-                    if (autoCommit != null) {
-                        connection.setAutoCommit(autoCommit);
-                    }
-                } finally {
-                    connection.close();
-                }
+                connection.close();
             }
         }
     }

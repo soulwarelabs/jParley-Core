@@ -1,11 +1,21 @@
 /*
- * Copyright 2014 Soulware Labs.
+ * Project:  jParley-Core
+ * Outline:  jParley framework core components
+ *
+ * File:     ParametersPrinter.java
+ * Folder:   /.../com/soulwarelabs/jparley/core
+ * Revision: 1.01, 16 April 2014
+ * Created:  16 March 2014
+ * Author:   Ilya Gubarev
+ *
+ * Copyright (c) 2014 Soulware Labs, Ltd.
+ * Contact information is available at http://www.soulwarelabs.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,13 +32,24 @@ import java.util.List;
 import com.soulwarelabs.jcommons.Box;
 
 /**
+ * SQL subroutine parameters printer.
  *
- * @author gubarev
+ * @see Interviewer
+ *
+ * @since v1.0
+ *
+ * @author Ilya Gubarev
+ * @version 16 April 2014
  */
 public class ParametersPrinter implements Interviewer, Serializable {
 
     private List<StringBuilder> parameters;
 
+    /**
+     * Creates a new instance of parameters printer.
+     *
+     * @since v1.0
+     */
     public ParametersPrinter() {
         parameters = new LinkedList<StringBuilder>();
     }
@@ -61,6 +82,13 @@ public class ParametersPrinter implements Interviewer, Serializable {
         parameters.add(line);
     }
 
+    /**
+     * Gets a text view of the printer and resets it.
+     *
+     * @return printer text view.
+     *
+     * @since v1.0
+     */
     public StringBuilder print() {
         StringBuilder result = new StringBuilder();
         for (int index = 0; index < parameters.size(); index++) {
@@ -72,6 +100,11 @@ public class ParametersPrinter implements Interviewer, Serializable {
         return result;
     }
 
+    /**
+     * Resets the printer.
+     *
+     * @since v1.0
+     */
     public void reset() {
         parameters.clear();
     }

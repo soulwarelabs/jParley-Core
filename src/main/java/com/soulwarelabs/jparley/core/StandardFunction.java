@@ -120,7 +120,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
     /**
      * Gets function result SQL structure name.
      *
-     * @return SQL structure name.
+     * @return SQL structure name (optional).
      *
      * @since v1.0
      */
@@ -131,7 +131,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
     /**
      * Sets function result SQL structure name.
      *
-     * @param struct SQL structure name.
+     * @param struct SQL structure name (optional).
      *
      * @since v1.0
      */

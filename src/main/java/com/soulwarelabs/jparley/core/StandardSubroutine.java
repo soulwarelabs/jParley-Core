@@ -4,7 +4,7 @@
  *
  * File:     StandardSubroutine.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.06, 16 April 2014
+ * Revision: 1.07, 16 April 2014
  * Created:  10 March 2014
  * Author:   Ilya Gubarev
  *
@@ -54,10 +54,22 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     private Interceptor postInterceptor;
     private Interceptor preInterceptor;
 
+    /**
+     * 
+     *
+     * @param name 
+     */
     public StandardSubroutine(String name) {
         this(name, null, null);
     }
 
+    /**
+     * 
+     *
+     * @param name
+     * @param preInterceptor
+     * @param postInterceptor 
+     */
     public StandardSubroutine(String name, Interceptor preInterceptor,
             Interceptor postInterceptor) {
         this.name = name;
@@ -66,10 +78,20 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         this.preInterceptor = preInterceptor;
     }
 
+    /**
+     * 
+     *
+     * @return 
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 
+     *
+     * @param name 
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -197,6 +219,11 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         input(name, new Box<Object>(value), null, encoder);
     }
 
+    /**
+     * 
+     *
+     * @return 
+     */
     public String print() {
         Interviewer interviewer = new ParametersPrinter();
         interview(interviewer);
@@ -213,26 +240,66 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         return print();
     }
 
+    /**
+     * 
+     *
+     * @param connection
+     * @throws SQLException 
+     */
     protected void after(Connection connection) throws SQLException {
         intercept(connection, getPostInterceptor());
     }
 
+    /**
+     * 
+     * @param connection
+     * @throws SQLException 
+     */
     protected void before(Connection connection) throws SQLException {
         intercept(connection, getPreInterceptor());
     }
 
+    /**
+     * 
+     *
+     * @param name
+     * @param parametersNumber
+     * @return 
+     */
     protected abstract String createSql(String name, int parametersNumber);
 
+    /**
+     * 
+     *
+     * @param index
+     * @param value
+     * @param type
+     * @param encoder 
+     */
     protected void input(int index, Box<?> value, Integer type,
             Converter encoder) {
         manager.in(index, value, type, encoder);
     }
 
+    /**
+     * 
+     *
+     * @param name
+     * @param value
+     * @param type
+     * @param encoder 
+     */
     protected void input(String name, Box<?> value, Integer type,
             Converter encoder) {
         manager.in(name, value, type, encoder);
     }
 
+    /**
+     * 
+     *
+     * @param interviewer
+     * @return 
+     */
     protected String interview(Interviewer interviewer) {
         for (Object key : manager.getKeys()) {
             Parameter parameter = manager.getParameter(key);
@@ -249,20 +316,48 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         return interviewer.toString();
     }
 
+    /**
+     * 
+     *
+     * @param index
+     * @param type
+     * @param struct
+     * @param decoder
+     * @return 
+     */
     protected Box<Object> output(int index, int type, String struct,
             Converter decoder) {
         return manager.out(index, type, struct, decoder);
     }
 
+    /**
+     * 
+     *
+     * @param name
+     * @param type
+     * @param struct
+     * @param decoder
+     * @return 
+     */
     protected Box<Object> output(String name, int type, String struct,
             Converter decoder) {
         return manager.out(name, type, struct, decoder);
     }
 
+    /**
+     * 
+     *
+     * @param index 
+     */
     protected void remove(int index) {
         manager.remove(index);
     }
 
+    /**
+     * 
+     *
+     * @param name 
+     */
     protected void remove(String name) {
         manager.remove(name);
     }

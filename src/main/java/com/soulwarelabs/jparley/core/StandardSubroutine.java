@@ -55,20 +55,26 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     private Interceptor preInterceptor;
 
     /**
-     * 
+     * Creates a new instance of standard subroutine.
      *
-     * @param name 
+     * @param name subroutine name.
+     *
+     * @since v1.0
      */
     public StandardSubroutine(String name) {
         this(name, null, null);
     }
 
     /**
-     * 
+     * Creates a new instance of standard subroutine.
      *
-     * @param name
-     * @param preInterceptor
-     * @param postInterceptor 
+     * @param name subroutine name.
+     * @param preInterceptor SQL pre-execution interceptor (optional).
+     * @param postInterceptor SQL post-execution interceptor (optional).
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
      */
     public StandardSubroutine(String name, Interceptor preInterceptor,
             Interceptor postInterceptor) {
@@ -78,20 +84,12 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         this.preInterceptor = preInterceptor;
     }
 
-    /**
-     * 
-     *
-     * @return 
-     */
+    @Override
     public String getName() {
         return name;
     }
 
-    /**
-     * 
-     *
-     * @param name 
-     */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -220,9 +218,11 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     /**
-     * 
+     * Gets a text view of the subroutine.
      *
-     * @return 
+     * @return subroutine text view.
+     *
+     * @since v1.0
      */
     public String print() {
         Interviewer interviewer = new ParametersPrinter();
@@ -241,40 +241,56 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     /**
-     * 
+     * Intercepts SQL workflow after subroutine is executed.
      *
-     * @param connection
-     * @throws SQLException 
+     * @param connection SQL database connection.
+     * @throws SQLException if error occurs while perform interception.
+     *
+     * @see #getPostInterceptor()
+     *
+     * @since v1.0
      */
     protected void after(Connection connection) throws SQLException {
         intercept(connection, getPostInterceptor());
     }
 
     /**
-     * 
-     * @param connection
-     * @throws SQLException 
+     * Intercepts SQL workflow before subroutine is executed.
+     *
+     * @param connection SQL database connection.
+     * @throws SQLException if error occurs while perform interception.
+     *
+     * @see #getPreInterceptor()
+     *
+     * @since v1.0
      */
     protected void before(Connection connection) throws SQLException {
         intercept(connection, getPreInterceptor());
     }
 
     /**
-     * 
+     * Creates a callable SQL statement string for the subroutine.
      *
-     * @param name
-     * @param parametersNumber
-     * @return 
+     * @param name subroutine name.
+     * @param parametersNumber subroutine parameters number.
+     * @return SQL statement string.
+     *
+     * @since v1.0
      */
     protected abstract String createSql(String name, int parametersNumber);
 
     /**
-     * 
+     * Registers a new input parameter.
      *
-     * @param index
-     * @param value
-     * @param type
-     * @param encoder 
+     * @param index parameter index.
+     * @param value parameter input value (optional).
+     * @param type parameter SQL type code (optional).
+     * @param encoder parameter SQL data encoder (optional).
+     *
+     * @see Box
+     * @see Converter
+     *
+     * @since v1.0
      */
     protected void input(int index, Box<?> value, Integer type,
             Converter encoder) {
@@ -282,12 +298,17 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     /**
-     * 
+     * Registers a new input parameter.
      *
-     * @param name
-     * @param value
-     * @param type
-     * @param encoder 
+     * @param name parameter name.
+     * @param value parameter input value (optional).
+     * @param type parameter SQL type code (optional).
+     * @param encoder parameter SQL data encoder (optional).
+     *
+     * @see Box
+     * @see Converter
+     *
+     * @since v1.0
      */
     protected void input(String name, Box<?> value, Integer type,
             Converter encoder) {
@@ -295,12 +316,15 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     /**
-     * 
+     * Processes registered parameters with specified processor.
      *
-     * @param interviewer
-     * @return 
+     * @param interviewer parameters processor.
+     *
+     * @see Interviewer
+     *
+     * @since v1.0
      */
-    protected String interview(Interviewer interviewer) {
+    protected void interview(Interviewer interviewer) {
         for (Object key : manager.getKeys()) {
             Parameter parameter = manager.getParameter(key);
             Box<?> input = parameter.getInput();
@@ -313,17 +337,21 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
                 interviewer.perform((String) key, input, output, type, struct);
             }
         }
-        return interviewer.toString();
     }
 
     /**
-     * 
+     * Registers a new output parameter.
      *
-     * @param index
-     * @param type
-     * @param struct
-     * @param decoder
-     * @return 
+     * @param index parameter index.
+     * @param type parameter SQL type code.
+     * @param struct parameter SQL structure name (optional).
+     * @param decoder parameter SQL data decoder (optional).
+     * @return boxed output value.
+     *
+     * @see Box
+     * @see Converter
+     *
+     * @since v1.0
      */
     protected Box<Object> output(int index, int type, String struct,
             Converter decoder) {
@@ -331,13 +359,18 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     /**
-     * 
+     * Registers a new output parameter.
      *
-     * @param name
-     * @param type
-     * @param struct
-     * @param decoder
-     * @return 
+     * @param name parameter name.
+     * @param type parameter SQL type code.
+     * @param struct parameter SQL structure name (optional).
+     * @param decoder parameter SQL data decoder (optional).
+     * @return boxed output value.
+     *
+     * @see Box
+     * @see Converter
+     *
+     * @since v1.0
      */
     protected Box<Object> output(String name, int type, String struct,
             Converter decoder) {
@@ -345,18 +378,22 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     /**
-     * 
+     * Removes registered subroutine parameter
      *
-     * @param index 
+     * @param index parameter index.
+     *
+     * @since v1.0
      */
     protected void remove(int index) {
         manager.remove(index);
     }
 
     /**
-     * 
+     * Removes registered subroutine parameter
      *
-     * @param name 
+     * @param name parameter name.
+     *
+     * @since v1.0
      */
     protected void remove(String name) {
         manager.remove(name);

@@ -105,6 +105,18 @@ public class StandardExecutor implements Executor, Serializable {
         this(pool, null, null);
     }
 
+    /**
+     * Creates a new instance of standard executor.
+     *
+     * @param pool SQL database connection pool.
+     * @param preInterceptor SQL pre-execution interceptor (optional).
+     * @param postInterceptor SQL post-execution interceptor (optional).
+     *
+     * @see ConnectionPool
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
     public StandardExecutor(ConnectionPool pool, Interceptor preInterceptor,
             Interceptor postInterceptor) {
         this.pool = pool;

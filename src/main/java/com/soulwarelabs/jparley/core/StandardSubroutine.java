@@ -34,6 +34,7 @@ import com.soulwarelabs.jcommons.Box;
 import com.soulwarelabs.jparley.Converter;
 import com.soulwarelabs.jparley.Subroutine;
 import com.soulwarelabs.jparley.utility.Manager;
+import com.soulwarelabs.jparley.utility.Parameter;
 import com.soulwarelabs.jparley.utility.Statement;
 
 /**
@@ -50,6 +51,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     private String name;
     private Manager manager;
+    private Interviewer interviewer;
     private Interceptor postInterceptor;
     private Interceptor preInterceptor;
 
@@ -61,6 +63,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
             Interceptor postInterceptor) {
         this.name = name;
         this.manager = new Manager();
+        this.interviewer = null;
         this.postInterceptor = postInterceptor;
         this.preInterceptor = preInterceptor;
     }
@@ -197,7 +200,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     public String print() {
-        return toString();
+        return String.format("%s {%s}", getName(), interview(interviewer));
     }
 
     @Override
@@ -207,8 +210,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     @Override
     public String toString(){
-        // TODO: log state here...
-        return super.toString();
+        return print();
     }
 
     protected void after(Connection connection) throws SQLException {
@@ -221,22 +223,48 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     protected abstract String createSql(String name, int parametersNumber);
 
-    protected void input(Object key, Box<?> value, Integer type,
+    protected void input(int index, Box<?> value, Integer type,
             Converter encoder) {
-        manager.in(key, value, type, encoder);
+        manager.in(index, value, type, encoder);
     }
 
-    protected void interview(Interviewer interviewer) {
-        // TODO: use interviewer on registered parameters...
+    protected void input(String name, Box<?> value, Integer type,
+            Converter encoder) {
+        manager.in(name, value, type, encoder);
     }
 
-    protected Box<Object> output(Object key, int type, String struct,
+    protected String interview(Interviewer interviewer) {
+        for (Object key : manager.getKeys()) {
+            Parameter parameter = manager.getParameter(key);
+            Box<?> input = parameter.getInput();
+            Box<Object> output = parameter.getOutput();
+            String struct = parameter.getStruct();
+            Integer type = parameter.getType();
+            if (key instanceof Integer) {
+                interviewer.perform((Integer) key, input, output, type, struct);
+            } else {
+                interviewer.perform((String) key, input, output, type, struct);
+            }
+        }
+        return interviewer.toString();
+    }
+
+    protected Box<Object> output(int index, int type, String struct,
             Converter decoder) {
-        return manager.out(key, type, struct, decoder);
+        return manager.out(index, type, struct, decoder);
     }
 
-    protected void remove(Object key) {
-        manager.remove(key);
+    protected Box<Object> output(String name, int type, String struct,
+            Converter decoder) {
+        return manager.out(name, type, struct, decoder);
+    }
+
+    protected void remove(int index) {
+        manager.remove(index);
+    }
+
+    protected void remove(String name) {
+        manager.remove(name);
     }
 
     private void intercept(Connection connection, Interceptor interceptor)

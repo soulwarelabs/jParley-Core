@@ -57,16 +57,16 @@ public class ParametersPrinter implements Interviewer, Serializable {
     @Override
     public void perform(int index, Box<?> input, Box<Object> output,
             Integer type, String struct) {
-        perform(index, input, output, type, struct);
+        perform((Object) index, input, output, type, struct);
     }
 
     @Override
     public void perform(String name, Box<?> input, Box<Object> output,
             Integer type, String struct) {
-        perform(name, input, output, type, struct);
+        perform((Object) name, input, output, type, struct);
     }
 
-    public void perform(Object key, Box<?> input, Box<Object> output,
+    private void perform(Object key, Box<?> input, Box<Object> output,
             Integer type, String struct) {
         StringBuilder line = new StringBuilder();
         line.append(key);

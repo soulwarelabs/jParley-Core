@@ -4,7 +4,7 @@
  *
  * File:     StandardExecutor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.07, 15 April 2014
+ * Revision: 1.08, 16 April 2014
  * Created:  08 February 2014
  * Author:   Ilya Gubarev
  *
@@ -43,7 +43,7 @@ import com.soulwarelabs.jparley.Subroutine;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 15 April 2014
+ * @version 18 April 2014
  */
 public class StandardExecutor implements Executor, Serializable {
 

@@ -54,6 +54,11 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
         super(name);
     }
 
+    public StandardProcedure(String name, Interceptor preInterceptor,
+            Interceptor postInterceptor) {
+        super(name, preInterceptor, postInterceptor);
+    }
+
     @Override
     public Box<Object> out(int index, int type) {
         return output(index, type, null, null);

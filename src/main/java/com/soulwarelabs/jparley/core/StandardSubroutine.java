@@ -205,6 +205,12 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         manager.removeAll();
     }
 
+    @Override
+    public String toString(){
+        // TODO: log state here...
+        return super.toString();
+    }
+
     protected void after(Connection connection) throws SQLException {
         intercept(connection, getPostInterceptor());
     }
@@ -218,6 +224,10 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     protected void input(Object key, Box<?> value, Integer type,
             Converter encoder) {
         manager.in(key, value, type, encoder);
+    }
+
+    protected void interview(Interviewer interviewer) {
+        // TODO: use interviewer on registered parameters...
     }
 
     protected Box<Object> output(Object key, int type, String struct,

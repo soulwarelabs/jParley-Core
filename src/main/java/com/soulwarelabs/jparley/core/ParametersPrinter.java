@@ -66,22 +66,6 @@ public class ParametersPrinter implements Interviewer, Serializable {
         perform((Object) name, input, output, type, struct);
     }
 
-    private void perform(Object key, Box<?> input, Box<Object> output,
-            Integer type, String struct) {
-        StringBuilder line = new StringBuilder();
-        line.append(key);
-        line.append(" = ");
-        line.append(input);
-        line.append("/");
-        line.append(output);
-        line.append(" (");
-        line.append(type);
-        line.append("/");
-        line.append(struct);
-        line.append("}");
-        parameters.add(line);
-    }
-
     /**
      * Gets a text view of the printer and resets it.
      *
@@ -112,5 +96,21 @@ public class ParametersPrinter implements Interviewer, Serializable {
     @Override
     public String toString() {
         return print().toString();
+    }
+
+    private void perform(Object key, Box<?> input, Box<Object> output,
+            Integer type, String struct) {
+        StringBuilder line = new StringBuilder();
+        line.append(key);
+        line.append(" = ");
+        line.append(input);
+        line.append("/");
+        line.append(output);
+        line.append(" (");
+        line.append(type);
+        line.append("/");
+        line.append(struct);
+        line.append("}");
+        parameters.add(line);
     }
 }

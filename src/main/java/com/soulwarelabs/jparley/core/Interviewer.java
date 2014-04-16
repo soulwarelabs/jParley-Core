@@ -4,7 +4,7 @@
  *
  * File:     Interviewer.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.01, 16 April 2014
+ * Revision: 1.02, 16 April 2014
  * Created:  16 February 2014
  * Author:   Ilya Gubarev
  *
@@ -40,6 +40,7 @@ public interface Interviewer {
     /**
      * Processes information about SQL subroutine parameter.
      *
+     * @param index parameter index.
      * @param input boxed parameter output value.
      * @param output boxed parameter output value.
      * @param type parameter SQL type code (optional).
@@ -49,5 +50,22 @@ public interface Interviewer {
      *
      * @since v1.0
      */
-    void perform(Box<?> input, Box<Object> output, Integer type, String struct);
+    void perform(int index, Box<?> input, Box<Object> output, Integer type,
+            String struct);
+
+    /**
+     * Processes information about SQL subroutine parameter.
+     *
+     * @param name parameter name.
+     * @param input boxed parameter output value.
+     * @param output boxed parameter output value.
+     * @param type parameter SQL type code (optional).
+     * @param struct parameter SQL structure name (optional).
+     *
+     * @see Box
+     *
+     * @since v1.0
+     */
+    void perform(String name, Box<?> input, Box<Object> output, Integer type,
+            String struct);
 }

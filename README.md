@@ -1,4 +1,4 @@
 jParley-Core
 ============
 
-jParley core components
+jParley framework core components

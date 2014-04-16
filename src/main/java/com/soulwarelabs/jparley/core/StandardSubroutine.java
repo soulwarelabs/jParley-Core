@@ -4,7 +4,7 @@
  *
  * File:     StandardSubroutine.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.05, 16 April 2014
+ * Revision: 1.06, 16 April 2014
  * Created:  10 March 2014
  * Author:   Ilya Gubarev
  *
@@ -223,6 +223,10 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     protected Box<Object> output(Object key, int type, String struct,
             Converter decoder) {
         return manager.out(key, type, struct, decoder);
+    }
+
+    protected void remove(Object key) {
+        manager.remove(key);
     }
 
     private void intercept(Connection connection, Interceptor interceptor)

@@ -61,7 +61,14 @@ public class StandardExecutor implements Executor, Serializable {
      * @since v1.0
      */
     public StandardExecutor(ConnectionPool pool) {
+        this(pool, null, null);
+    }
+
+    public StandardExecutor(ConnectionPool pool, Interceptor preInterceptor,
+            Interceptor postInterceptor) {
         this.pool = pool;
+        this.postInterceptor = postInterceptor;
+        this.preInterceptor = preInterceptor;
     }
 
     /**

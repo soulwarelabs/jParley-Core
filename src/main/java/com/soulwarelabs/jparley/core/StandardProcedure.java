@@ -4,7 +4,7 @@
  *
  * File:     StandardProcedure.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.02, 15 April 2014
+ * Revision: 1.03, 16 April 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -26,7 +26,6 @@
 package com.soulwarelabs.jparley.core;
 
 import com.soulwarelabs.jcommons.Box;
-import com.soulwarelabs.jcommons.Optional;
 
 import com.soulwarelabs.jparley.Converter;
 import com.soulwarelabs.jparley.Procedure;
@@ -40,7 +39,7 @@ import com.soulwarelabs.jparley.Procedure;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 15 April 2014
+ * @version 16 April 2014
  */
 public class StandardProcedure extends StandardSubroutine implements Procedure {
 
@@ -66,39 +65,43 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
     }
 
     @Override
-    public Box<Object> out(int index, int type, @Optional String struct) {
+    public Box<Object> out(int index, int type, String struct) {
         return output(index, type, struct, null);
     }
 
     @Override
-    public Box<Object> out(String name, int type, @Optional String struct) {
+    public Box<Object> out(String name, int type, String struct) {
         return output(name, type, struct, null);
     }
 
     @Override
-    public Box<Object> out(int index, int type, @Optional Converter decoder) {
+    public Box<Object> out(int index, int type, Converter decoder) {
         return output(index, type, null, decoder);
     }
 
     @Override
-    public Box<Object> out(String name, int type, @Optional Converter decoder) {
+    public Box<Object> out(String name, int type, Converter decoder) {
         return output(name, type, null, decoder);
     }
 
     @Override
-    public Box<Object> out(int index, int type, @Optional String struct,
-            @Optional Converter decoder) {
+    public Box<Object> out(int index, int type, String struct,
+            Converter decoder) {
         return output(index, type, struct, decoder);
     }
 
     @Override
-    public Box<Object> out(String name, int type, @Optional String struct,
-            @Optional Converter decoder) {
+    public Box<Object> out(String name, int type, String struct,
+            Converter decoder) {
         return output(name, type, struct, decoder);
     }
 
     @Override
     protected String createSql(String name, int parametersNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder parameters = new StringBuilder();
+        for (int i = 1; i <= parametersNumber; i++) {
+            parameters.append(i < parametersNumber ? "?," : "?");
+        }
+        return String.format("{call %s(%s)}", name, parameters);
     }
 }

@@ -4,7 +4,7 @@
  *
  * File:     StandardSubroutine.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.03, 15 April 2014
+ * Revision: 1.04, 16 April 2014
  * Created:  10 March 2014
  * Author:   Ilya Gubarev
  *
@@ -30,7 +30,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.soulwarelabs.jcommons.Box;
-import com.soulwarelabs.jcommons.Optional;
 
 import com.soulwarelabs.jparley.Converter;
 import com.soulwarelabs.jparley.Subroutine;
@@ -45,12 +44,14 @@ import com.soulwarelabs.jparley.utility.Statement;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 15 April 2014
+ * @version 16 April 2014
  */
 public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     private String name;
     private Manager manager;
+    private Interceptor postInterceptor;
+    private Interceptor preInterceptor;
 
     public StandardSubroutine(String name) {
         this.name = name;
@@ -65,14 +66,63 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         this.name = name;
     }
 
-    public String getPrintedView() {
-        throw new UnsupportedOperationException();
+    /**
+     * Gets SQL workflow post-execution interceptor.
+     *
+     * @return SQL workflow interceptor.
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
+    public Interceptor getPostInterceptor() {
+        return postInterceptor;
+    }
+
+    /**
+     * Sets a new SQL workflow post-execution interceptor.
+     *
+     * @param postInterceptor SQL workflow interceptor.
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
+    public void setPostInterceptor(Interceptor postInterceptor) {
+        this.postInterceptor = postInterceptor;
+    }
+
+    /**
+     * Gets SQL workflow pre-execution interceptor.
+     *
+     * @return SQL workflow interceptor.
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
+    public Interceptor getPreInterceptor() {
+        return preInterceptor;
+    }
+
+    /**
+     * Sets a new SQL workflow pre-execution interceptor.
+     *
+     * @param preInterceptor SQL workflow interceptor.
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
+    public void setPreInterceptor(Interceptor preInterceptor) {
+        this.preInterceptor = preInterceptor;
     }
 
     @Override
     public void execute(Connection connection) throws SQLException {
         before(connection);
-        Statement statement = createStatement(getName(), manager.getTotal());
+        String sql = createSql(getName(), manager.getTotal());
+        Statement statement = new Statement(connection.prepareCall(sql));
         manager.setupAll(connection, statement);
         statement.execute();
         manager.parseAll(connection, statement);
@@ -85,7 +135,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     @Override
-    public void in(int index, @Optional Object value) {
+    public void in(int index, Object value) {
         input(index, new Box<Object>(value), null, null);
     }
 
@@ -95,27 +145,27 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     @Override
-    public void in(String name, @Optional Object value) {
+    public void in(String name, Object value) {
         input(name, new Box<Object>(value), null, null);
     }
 
     @Override
-    public void in(int index, Box<?> value, @Optional Integer type) {
+    public void in(int index, Box<?> value, Integer type) {
         input(index, value, type, null);
     }
 
     @Override
-    public void in(int index, @Optional Object value, @Optional Integer type) {
+    public void in(int index, Object value, Integer type) {
         input(index, new Box<Object>(value), type, null);
     }
 
     @Override
-    public void in(String name, Box<?> value, @Optional Integer type) {
+    public void in(String name, Box<?> value, Integer type) {
         input(name, value, type, null);
     }
 
     @Override
-    public void in(String name, @Optional Object value, @Optional Integer type) {
+    public void in(String name, Object value, Integer type) {
         input(name, new Box<Object>(value), type, null);
     }
 
@@ -139,6 +189,10 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         input(name, new Box<Object>(value), null, encoder);
     }
 
+    public String print() {
+        return toString();
+    }
+
     @Override
     public void reset() {
         manager.removeAll();
@@ -154,18 +208,13 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     protected abstract String createSql(String name, int parametersNumber);
 
-    protected void input(Object key, Box<?> value, @Optional Integer type,
-            @Optional Converter encoder) {
+    protected void input(Object key, Box<?> value, Integer type,
+            Converter encoder) {
         manager.in(key, value, type, encoder);
     }
 
-    protected Box<Object> output(Object key, int type, @Optional String struct,
-            @Optional Converter decoder) {
+    protected Box<Object> output(Object key, int type, String struct,
+            Converter decoder) {
         return manager.out(key, type, struct, decoder);
-    }
-
-    private Statement createStatement(String name, int parametersNumber)
-            throws SQLException {
-        throw new UnsupportedOperationException();
     }
 }

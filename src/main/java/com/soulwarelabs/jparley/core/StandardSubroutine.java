@@ -61,8 +61,8 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
             Interceptor postInterceptor) {
         this.name = name;
         this.manager = new Manager();
+        this.postInterceptor = postInterceptor;
         this.preInterceptor = preInterceptor;
-        this.preInterceptor = postInterceptor;
     }
 
     public String getName() {

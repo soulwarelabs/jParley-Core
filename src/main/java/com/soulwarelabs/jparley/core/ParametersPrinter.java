@@ -75,4 +75,9 @@ public class ParametersPrinter implements Interviewer, Serializable {
     public void reset() {
         parameters.clear();
     }
+
+    @Override
+    public String toString() {
+        return print().toString();
+    }
 }

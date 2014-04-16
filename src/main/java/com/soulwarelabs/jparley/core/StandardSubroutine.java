@@ -198,9 +198,9 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     public String print() {
-        Interviewer interviewer = null;
+        Interviewer interviewer = new ParametersPrinter();
         interview(interviewer);
-        return String.format("%s {%s}", getName(), interviewer);
+        return String.format("%s {\r\n%s\r\n}", getName(), interviewer);
     }
 
     @Override

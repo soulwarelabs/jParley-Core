@@ -4,7 +4,7 @@
  *
  * File:     StandardFunction.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.02, 16 April 2014
+ * Revision: 1.03, 16 April 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -165,7 +165,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
     public void execute(Connection connection) throws SQLException {
         output(index, getType(), getStruct(), getDecoder());
         super.execute(connection);
-        // TODO: unregister function result...
+        remove(index);
     }
 
     @Override

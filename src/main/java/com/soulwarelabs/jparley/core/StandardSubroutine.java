@@ -51,7 +51,6 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     private String name;
     private Manager manager;
-    private Interviewer interviewer;
     private Interceptor postInterceptor;
     private Interceptor preInterceptor;
 
@@ -63,7 +62,6 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
             Interceptor postInterceptor) {
         this.name = name;
         this.manager = new Manager();
-        this.interviewer = null;
         this.postInterceptor = postInterceptor;
         this.preInterceptor = preInterceptor;
     }
@@ -200,7 +198,9 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     public String print() {
-        return String.format("%s {%s}", getName(), interview(interviewer));
+        Interviewer interviewer = null;
+        interview(interviewer);
+        return String.format("%s {%s}", getName(), interviewer);
     }
 
     @Override

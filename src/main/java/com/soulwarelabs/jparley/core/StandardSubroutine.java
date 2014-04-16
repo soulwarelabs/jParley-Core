@@ -4,7 +4,7 @@
  *
  * File:     StandardSubroutine.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.04, 16 April 2014
+ * Revision: 1.05, 16 April 2014
  * Created:  10 March 2014
  * Author:   Ilya Gubarev
  *
@@ -54,8 +54,15 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     private Interceptor preInterceptor;
 
     public StandardSubroutine(String name) {
+        this(name, null, null);
+    }
+
+    public StandardSubroutine(String name, Interceptor preInterceptor,
+            Interceptor postInterceptor) {
         this.name = name;
         this.manager = new Manager();
+        this.preInterceptor = preInterceptor;
+        this.preInterceptor = postInterceptor;
     }
 
     public String getName() {
@@ -199,11 +206,11 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     protected void after(Connection connection) throws SQLException {
-
+        intercept(connection, getPostInterceptor());
     }
 
     protected void before(Connection connection) throws SQLException {
-
+        intercept(connection, getPreInterceptor());
     }
 
     protected abstract String createSql(String name, int parametersNumber);
@@ -216,5 +223,12 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     protected Box<Object> output(Object key, int type, String struct,
             Converter decoder) {
         return manager.out(key, type, struct, decoder);
+    }
+
+    private void intercept(Connection connection, Interceptor interceptor)
+            throws SQLException {
+        if (interceptor != null) {
+            interceptor.perform(connection);
+        }
     }
 }

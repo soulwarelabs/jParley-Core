@@ -57,43 +57,48 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
 
     @Override
     public Box<Object> out(int index, int type) {
-        return getManager().out(index, type, null, null);
+        return output(index, type, null, null);
     }
 
     @Override
     public Box<Object> out(String name, int type) {
-        return getManager().out(name, type, null, null);
+        return output(name, type, null, null);
     }
 
     @Override
     public Box<Object> out(int index, int type, @Optional String struct) {
-        return getManager().out(index, type, struct, null);
+        return output(index, type, struct, null);
     }
 
     @Override
     public Box<Object> out(String name, int type, @Optional String struct) {
-        return getManager().out(name, type, struct, null);
+        return output(name, type, struct, null);
     }
 
     @Override
     public Box<Object> out(int index, int type, @Optional Converter decoder) {
-        return getManager().out(index, type, null, decoder);
+        return output(index, type, null, decoder);
     }
 
     @Override
     public Box<Object> out(String name, int type, @Optional Converter decoder) {
-        return getManager().out(name, type, null, decoder);
+        return output(name, type, null, decoder);
     }
 
     @Override
     public Box<Object> out(int index, int type, @Optional String struct,
             @Optional Converter decoder) {
-        return getManager().out(index, type, struct, decoder);
+        return output(index, type, struct, decoder);
     }
 
     @Override
     public Box<Object> out(String name, int type, @Optional String struct,
             @Optional Converter decoder) {
-        return getManager().out(name, type, struct, decoder);
+        return output(name, type, struct, decoder);
+    }
+
+    @Override
+    protected String createSql(String name, int parametersNumber) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

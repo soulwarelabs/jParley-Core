@@ -33,7 +33,6 @@ import com.soulwarelabs.jcommons.sql.ConnectionPool;
 
 import com.soulwarelabs.jparley.Executor;
 import com.soulwarelabs.jparley.Function;
-import com.soulwarelabs.jparley.Interceptor;
 import com.soulwarelabs.jparley.Subroutine;
 
 /**

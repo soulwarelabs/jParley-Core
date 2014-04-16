@@ -30,10 +30,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.soulwarelabs.jcommons.Box;
+import com.soulwarelabs.jcommons.Optional;
 
 import com.soulwarelabs.jparley.Converter;
 import com.soulwarelabs.jparley.Subroutine;
 import com.soulwarelabs.jparley.utility.Manager;
+import com.soulwarelabs.jparley.utility.Statement;
 
 /**
  * Standard SQL stored subroutine.
@@ -45,7 +47,7 @@ import com.soulwarelabs.jparley.utility.Manager;
  * @author Ilya Gubarev
  * @version 15 April 2014
  */
-public class StandardSubroutine implements Serializable, Subroutine {
+public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     private String name;
     private Manager manager;
@@ -63,77 +65,107 @@ public class StandardSubroutine implements Serializable, Subroutine {
         this.name = name;
     }
 
-    @Override
-    public void execute(Connection connection) throws SQLException {
+    public String getPrintedView() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void in(int index, Box<?> value) {
-        getManager().in(index, value, null, null);
+    public void execute(Connection connection) throws SQLException {
+        before(connection);
+        Statement statement = createStatement(getName(), manager.getTotal());
+        manager.setupAll(connection, statement);
+        statement.execute();
+        manager.parseAll(connection, statement);
+        after(connection);
     }
 
     @Override
-    public void in(int index, Object value) {
-        getManager().in(index, new Box<Object>(value), null, null);
+    public void in(int index, Box<?> value) {
+        input(index, value, null, null);
+    }
+
+    @Override
+    public void in(int index, @Optional Object value) {
+        input(index, new Box<Object>(value), null, null);
     }
 
     @Override
     public void in(String name, Box<?> value) {
-        getManager().in(name, value, null, null);
+        input(name, value, null, null);
     }
 
     @Override
-    public void in(String name, Object value) {
-        getManager().in(name, new Box<Object>(value), null, null);
+    public void in(String name, @Optional Object value) {
+        input(name, new Box<Object>(value), null, null);
     }
 
     @Override
-    public void in(int index, Box<?> value, Integer type) {
-        getManager().in(index, value, type, null);
+    public void in(int index, Box<?> value, @Optional Integer type) {
+        input(index, value, type, null);
     }
 
     @Override
-    public void in(int index, Object value, Integer type) {
-        getManager().in(index, new Box<Object>(value), type, null);
+    public void in(int index, @Optional Object value, @Optional Integer type) {
+        input(index, new Box<Object>(value), type, null);
     }
 
     @Override
-    public void in(String name, Box<?> value, Integer type) {
-        getManager().in(name, value, type, null);
+    public void in(String name, Box<?> value, @Optional Integer type) {
+        input(name, value, type, null);
     }
 
     @Override
-    public void in(String name, Object value, Integer type) {
-        getManager().in(name, new Box<Object>(value), type, null);
+    public void in(String name, @Optional Object value, @Optional Integer type) {
+        input(name, new Box<Object>(value), type, null);
     }
 
     @Override
     public void in(int index, Box<?> value, Converter encoder) {
-        getManager().in(index, value, null, encoder);
+        input(index, value, null, encoder);
     }
 
     @Override
     public void in(int index, Object value, Converter encoder) {
-        getManager().in(index, new Box<Object>(value), null, encoder);
+        input(index, new Box<Object>(value), null, encoder);
     }
 
     @Override
     public void in(String name, Box<?> value, Converter encoder) {
-        getManager().in(name, value, null, encoder);
+        input(name, value, null, encoder);
     }
 
     @Override
     public void in(String name, Object value, Converter encoder) {
-        getManager().in(name, new Box<Object>(value), null, encoder);
+        input(name, new Box<Object>(value), null, encoder);
     }
 
     @Override
     public void reset() {
-        getManager().removeAll();
+        manager.removeAll();
     }
 
-    protected Manager getManager() {
-        return manager;
+    protected void after(Connection connection) throws SQLException {
+
+    }
+
+    protected void before(Connection connection) throws SQLException {
+
+    }
+
+    protected abstract String createSql(String name, int parametersNumber);
+
+    protected void input(Object key, Box<?> value, @Optional Integer type,
+            @Optional Converter encoder) {
+        manager.in(key, value, type, encoder);
+    }
+
+    protected Box<Object> output(Object key, int type, @Optional String struct,
+            @Optional Converter decoder) {
+        return manager.out(key, type, struct, decoder);
+    }
+
+    private Statement createStatement(String name, int parametersNumber)
+            throws SQLException {
+        throw new UnsupportedOperationException();
     }
 }

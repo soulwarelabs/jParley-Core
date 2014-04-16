@@ -4,7 +4,7 @@
  *
  * File:     StandardProcedure.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.03, 16 April 2014
+ * Revision: 1.04, 16 April 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -51,9 +51,20 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
      * @since v1.0
      */
     public StandardProcedure(String name) {
-        super(name);
+        this(name, null, null);
     }
 
+    /**
+     * Creates a new instance of standard procedure.
+     *
+     * @param name procedure name.
+     * @param preInterceptor SQL pre-execution interceptor (optional).
+     * @param postInterceptor SQL post-execution interceptor (optional).
+     *
+     * @see Interceptor
+     *
+     * @since v1.0
+     */
     public StandardProcedure(String name, Interceptor preInterceptor,
             Interceptor postInterceptor) {
         super(name, preInterceptor, postInterceptor);

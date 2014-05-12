@@ -4,7 +4,7 @@
  *
  * File:     StandardExecutor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.09, 16 April 2014
+ * Revision: 1.10, 12 May 2014
  * Created:  08 February 2014
  * Author:   Ilya Gubarev
  *
@@ -43,12 +43,12 @@ import com.soulwarelabs.jparley.Subroutine;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 12 May 2014
  */
 public class StandardExecutor implements Executor, Serializable {
 
     /**
-     * Executes specified SQL stored subroutines in a single transaction.
+     * Executes specified SQL stored subroutines.
      *
      * @param connection SQL database connection.
      * @param subroutines SQL subroutines to be executed.
@@ -65,26 +65,14 @@ public class StandardExecutor implements Executor, Serializable {
 
     private static void call(StandardExecutor executor, Connection connection,
             Subroutine ... subroutines) throws SQLException {
-        Boolean autoCommit = null;
-        try {
-            autoCommit = connection.getAutoCommit();
-            connection.setAutoCommit(false);
-            if (executor != null) {
-                executor.before(connection);
-            }
-            for (Subroutine subroutine : subroutines) {
-                subroutine.execute(connection);
-            }
-            if (executor != null) {
-                executor.after(connection);
-            }
-            connection.commit();
-        } finally {
-            if (connection != null) {
-                if (autoCommit != null) {
-                    connection.setAutoCommit(autoCommit);
-                }
-            }
+        if (executor != null) {
+            executor.before(connection);
+        }
+        for (Subroutine subroutine : subroutines) {
+            subroutine.execute(connection);
+        }
+        if (executor != null) {
+            executor.after(connection);
         }
     }
 

@@ -4,7 +4,7 @@
  *
  * File:     StandardSubroutine.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.07, 16 April 2014
+ * Revision: 1.08, 13 May 2014
  * Created:  10 March 2014
  * Author:   Ilya Gubarev
  *
@@ -45,7 +45,7 @@ import com.soulwarelabs.jparley.utility.Statement;
  * @since v1.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 13 May 2014
  */
 public abstract class StandardSubroutine implements Serializable, Subroutine {
 
@@ -159,6 +159,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     @Override
     public void in(int index, Box<?> value) {
+        value = value != null ? value : new Box<Object>();
         input(index, value, null, null);
     }
 
@@ -169,6 +170,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     @Override
     public void in(String name, Box<?> value) {
+        value = value != null ? value : new Box<Object>();
         input(name, value, null, null);
     }
 
@@ -179,6 +181,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     @Override
     public void in(int index, Box<?> value, Integer type) {
+        value = value != null ? value : new Box<Object>();
         input(index, value, type, null);
     }
 
@@ -189,6 +192,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     @Override
     public void in(String name, Box<?> value, Integer type) {
+        value = value != null ? value : new Box<Object>();
         input(name, value, type, null);
     }
 
@@ -199,6 +203,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     @Override
     public void in(int index, Box<?> value, Converter encoder) {
+        value = value != null ? value : new Box<Object>();
         input(index, value, null, encoder);
     }
 
@@ -209,6 +214,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
 
     @Override
     public void in(String name, Box<?> value, Converter encoder) {
+        value = value != null ? value : new Box<Object>();
         input(name, value, null, encoder);
     }
 

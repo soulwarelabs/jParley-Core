@@ -4,7 +4,7 @@
  *
  * File:     StandardExecutor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.10, 12 May 2014
+ * Revision: 1.11, 11 June 2014
  * Created:  08 February 2014
  * Author:   Ilya Gubarev
  *
@@ -30,7 +30,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.soulwarelabs.jcommons.sql.ConnectionPool;
-
 import com.soulwarelabs.jparley.Executor;
 import com.soulwarelabs.jparley.Function;
 import com.soulwarelabs.jparley.Subroutine;
@@ -40,10 +39,10 @@ import com.soulwarelabs.jparley.Subroutine;
  *
  * @see Executor
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 12 May 2014
+ * @version 11 June 2014
  */
 public class StandardExecutor implements Executor, Serializable {
 
@@ -56,7 +55,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see Subroutine
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public static void call(Connection connection, Subroutine ... subroutines)
             throws SQLException {
@@ -87,7 +86,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see ConnectionPool
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StandardExecutor(ConnectionPool pool) {
         this(pool, null, null);
@@ -103,7 +102,7 @@ public class StandardExecutor implements Executor, Serializable {
      * @see ConnectionPool
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StandardExecutor(ConnectionPool pool, Interceptor preInterceptor,
             Interceptor postInterceptor) {
@@ -119,7 +118,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see ConnectionPool
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public ConnectionPool getPool() {
         return pool;
@@ -132,7 +131,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see ConnectionPool
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setPool(ConnectionPool pool) {
         this.pool = pool;
@@ -145,7 +144,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Interceptor getPostInterceptor() {
         return postInterceptor;
@@ -158,7 +157,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setPostInterceptor(Interceptor postInterceptor) {
         this.postInterceptor = postInterceptor;
@@ -171,7 +170,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Interceptor getPreInterceptor() {
         return preInterceptor;
@@ -184,7 +183,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setPreInterceptor(Interceptor preInterceptor) {
         this.preInterceptor = preInterceptor;
@@ -231,7 +230,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see #getPostInterceptor()
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void after(Connection connection) throws SQLException {
         intercept(connection, getPostInterceptor());
@@ -245,7 +244,7 @@ public class StandardExecutor implements Executor, Serializable {
      *
      * @see #getPreInterceptor()
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void before(Connection connection) throws SQLException {
         intercept(connection, getPreInterceptor());

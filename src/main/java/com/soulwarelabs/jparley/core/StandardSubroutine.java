@@ -408,7 +408,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     private void intercept(Connection connection, Interceptor interceptor)
             throws SQLException {
         if (interceptor != null) {
-            interceptor.perform(connection);
+            interceptor.perform(connection, null);
         }
     }
 }

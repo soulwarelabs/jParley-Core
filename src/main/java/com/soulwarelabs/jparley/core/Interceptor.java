@@ -4,7 +4,7 @@
  *
  * File:     Interceptor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.02, 16 April 2014
+ * Revision: 1.02, 11 June 2014
  * Created:  15 February 2014
  * Author:   Ilya Gubarev
  *
@@ -31,10 +31,10 @@ import java.sql.SQLException;
 /**
  * SQL execution workflow interceptor.
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 11 June 2014
  */
 public interface Interceptor {
 
@@ -42,9 +42,12 @@ public interface Interceptor {
      * Intercepts SQL execution workflow.
      *
      * @param connection SQL database connection.
+     * @param object additional object for interception (optional).
      * @throws SQLException if error occurs while performing interception.
      *
-     * @since v1.0
+     * @see Connection
+     *
+     * @since v1.0.0
      */
-    void perform(Connection connection) throws SQLException;
+    void perform(Connection connection, Object object) throws SQLException;
 }

@@ -253,7 +253,7 @@ public class StandardExecutor implements Executor, Serializable {
     private void intercept(Connection connection, Interceptor interceptor)
             throws SQLException {
         if (interceptor != null) {
-            interceptor.perform(connection);
+            interceptor.perform(connection, null);
         }
     }
 }

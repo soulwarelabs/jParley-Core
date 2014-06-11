@@ -4,7 +4,7 @@
  *
  * File:     StandardProcedure.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.04, 16 April 2014
+ * Revision: 1.05, 11 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -26,7 +26,6 @@
 package com.soulwarelabs.jparley.core;
 
 import com.soulwarelabs.jcommons.Box;
-
 import com.soulwarelabs.jparley.Converter;
 import com.soulwarelabs.jparley.Procedure;
 
@@ -36,10 +35,10 @@ import com.soulwarelabs.jparley.Procedure;
  * @see Procedure
  * @see StandardSubroutine
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 11 June 2014
  */
 public class StandardProcedure extends StandardSubroutine implements Procedure {
 
@@ -48,7 +47,7 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
      *
      * @param name procedure name.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StandardProcedure(String name) {
         this(name, null, null);
@@ -63,7 +62,7 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StandardProcedure(String name, Interceptor preInterceptor,
             Interceptor postInterceptor) {

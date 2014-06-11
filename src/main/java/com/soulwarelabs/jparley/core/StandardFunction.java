@@ -4,7 +4,7 @@
  *
  * File:     StandardFunction.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.03, 16 April 2014
+ * Revision: 1.04, 11 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -29,7 +29,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.soulwarelabs.jcommons.Box;
-
 import com.soulwarelabs.jparley.Converter;
 import com.soulwarelabs.jparley.Function;
 
@@ -39,10 +38,10 @@ import com.soulwarelabs.jparley.Function;
  * @see Function
  * @see StandardSubroutine
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 11 June 2014
  */
 public class StandardFunction extends StandardSubroutine implements Function {
 
@@ -59,7 +58,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
      * @param name function name.
      * @param type function result SQL type code.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StandardFunction(String name, int type) {
         this(name, type, null, null);
@@ -75,7 +74,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StandardFunction(String name, int type, Interceptor preInterceptor,
             Interceptor postInterceptor) {
@@ -93,7 +92,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
      *
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Converter getDecoder() {
         return decoder;
@@ -106,7 +105,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
      *
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setDecoder(Converter decoder) {
         this.decoder = decoder;
@@ -122,7 +121,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
      *
      * @return SQL structure name (optional).
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public String getStruct() {
         return struct;
@@ -133,7 +132,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
      *
      * @param struct SQL structure name (optional).
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setStruct(String struct) {
         this.struct = struct;
@@ -144,7 +143,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
      *
      * @return SQL type code.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public int getType() {
         return type;
@@ -155,7 +154,7 @@ public class StandardFunction extends StandardSubroutine implements Function {
      *
      * @param type SQL type code.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setType(int type) {
         this.type = type;

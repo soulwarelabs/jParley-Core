@@ -4,7 +4,7 @@
  *
  * File:     ParametersPrinter.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.01, 16 April 2014
+ * Revision: 1.01, 11 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -36,10 +36,10 @@ import com.soulwarelabs.jcommons.Box;
  *
  * @see Interviewer
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 11 June 2014
  */
 public class ParametersPrinter implements Interviewer, Serializable {
 
@@ -48,22 +48,27 @@ public class ParametersPrinter implements Interviewer, Serializable {
     /**
      * Creates a new instance of parameters printer.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public ParametersPrinter() {
         parameters = new LinkedList<StringBuilder>();
     }
 
     @Override
-    public void perform(int index, Box<?> input, Box<Object> output,
+    public void perform(Object key, Box<?> input, Box<Object> output,
             Integer type, String struct) {
-        perform((Object) index, input, output, type, struct);
-    }
-
-    @Override
-    public void perform(String name, Box<?> input, Box<Object> output,
-            Integer type, String struct) {
-        perform((Object) name, input, output, type, struct);
+        StringBuilder line = new StringBuilder();
+        line.append(key);
+        line.append(" = ");
+        line.append(input);
+        line.append("/");
+        line.append(output);
+        line.append(" (");
+        line.append(type);
+        line.append("/");
+        line.append(struct);
+        line.append("}");
+        parameters.add(line);
     }
 
     /**
@@ -71,7 +76,7 @@ public class ParametersPrinter implements Interviewer, Serializable {
      *
      * @return printer text view.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StringBuilder print() {
         StringBuilder result = new StringBuilder();
@@ -87,7 +92,7 @@ public class ParametersPrinter implements Interviewer, Serializable {
     /**
      * Resets the printer.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void reset() {
         parameters.clear();
@@ -96,21 +101,5 @@ public class ParametersPrinter implements Interviewer, Serializable {
     @Override
     public String toString() {
         return print().toString();
-    }
-
-    private void perform(Object key, Box<?> input, Box<Object> output,
-            Integer type, String struct) {
-        StringBuilder line = new StringBuilder();
-        line.append(key);
-        line.append(" = ");
-        line.append(input);
-        line.append("/");
-        line.append(output);
-        line.append(" (");
-        line.append(type);
-        line.append("/");
-        line.append(struct);
-        line.append("}");
-        parameters.add(line);
     }
 }

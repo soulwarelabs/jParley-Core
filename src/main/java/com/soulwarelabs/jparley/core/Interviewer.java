@@ -4,7 +4,7 @@
  *
  * File:     Interviewer.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.02, 16 April 2014
+ * Revision: 1.03, 11 June 2014
  * Created:  16 February 2014
  * Author:   Ilya Gubarev
  *
@@ -30,42 +30,26 @@ import com.soulwarelabs.jcommons.Box;
 /**
  * SQL subroutine parameter processor.
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 April 2014
+ * @version 11 June 2014
  */
 public interface Interviewer {
 
     /**
      * Processes information about SQL subroutine parameter.
      *
-     * @param index parameter index.
-     * @param input boxed parameter output value.
-     * @param output boxed parameter output value.
+     * @param key parameter key.
+     * @param input boxed parameter output value (optional).
+     * @param output boxed parameter output value (optional).
      * @param type parameter SQL type code (optional).
      * @param struct parameter SQL structure name (optional).
      *
      * @see Box
      *
-     * @since v1.0
+     * @since v1.0.0
      */
-    void perform(int index, Box<?> input, Box<Object> output, Integer type,
-            String struct);
-
-    /**
-     * Processes information about SQL subroutine parameter.
-     *
-     * @param name parameter name.
-     * @param input boxed parameter output value.
-     * @param output boxed parameter output value.
-     * @param type parameter SQL type code (optional).
-     * @param struct parameter SQL structure name (optional).
-     *
-     * @see Box
-     *
-     * @since v1.0
-     */
-    void perform(String name, Box<?> input, Box<Object> output, Integer type,
+    void perform(Object key, Box<?> input, Box<Object> output, Integer type,
             String struct);
 }

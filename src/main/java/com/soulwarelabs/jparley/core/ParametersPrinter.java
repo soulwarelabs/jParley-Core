@@ -43,6 +43,8 @@ import com.soulwarelabs.jcommons.Box;
  */
 public class ParametersPrinter implements Interviewer, Serializable {
 
+    private String prefix;
+    private String linePrefix;
     private List<StringBuilder> parameters;
 
     /**
@@ -51,7 +53,21 @@ public class ParametersPrinter implements Interviewer, Serializable {
      * @since v1.0.0
      */
     public ParametersPrinter() {
-        parameters = new LinkedList<StringBuilder>();
+        this("", "");
+    }
+
+    /**
+     * Creates a new instance of parameters printer.
+     *
+     * @param prefix prefix to the text view.
+     * @param linePrefix prefix to each line of the text view.
+     *
+     * @since v1.0.0
+     */
+    public ParametersPrinter(String prefix, String linePrefix) {
+        this.prefix = prefix;
+        this.linePrefix = linePrefix;
+        this.parameters = new LinkedList<StringBuilder>();
     }
 
     @Override
@@ -84,19 +100,6 @@ public class ParametersPrinter implements Interviewer, Serializable {
      * @since v1.0.0
      */
     public StringBuilder print() {
-        return print("", "");
-    }
-
-    /**
-     * Gets a text view of the printer.
-     *
-     * @param prefix prefix to the text view.
-     * @param linePrefix prefix to each line of the text view.
-     * @return printer text view.
-     *
-     * @since v1.0.0
-     */
-    public StringBuilder print(String prefix, String linePrefix) {
         StringBuilder result = new StringBuilder(prefix);
         for (int index = 0; index < parameters.size(); index++) {
             StringBuilder line = parameters.get(index);

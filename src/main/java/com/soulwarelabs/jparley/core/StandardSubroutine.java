@@ -4,7 +4,7 @@
  *
  * File:     StandardSubroutine.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.08, 13 May 2014
+ * Revision: 1.09, 14 June 2014
  * Created:  10 March 2014
  * Author:   Ilya Gubarev
  *
@@ -30,7 +30,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.soulwarelabs.jcommons.Box;
-
 import com.soulwarelabs.jparley.Converter;
 import com.soulwarelabs.jparley.Subroutine;
 import com.soulwarelabs.jparley.utility.Manager;
@@ -42,10 +41,10 @@ import com.soulwarelabs.jparley.utility.Statement;
  *
  * @see Subroutine
  *
- * @since v1.0
+ * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 13 May 2014
+ * @version 14 June 2014
  */
 public abstract class StandardSubroutine implements Serializable, Subroutine {
 
@@ -59,7 +58,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @param name subroutine name.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StandardSubroutine(String name) {
         this(name, null, null);
@@ -74,7 +73,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public StandardSubroutine(String name, Interceptor preInterceptor,
             Interceptor postInterceptor) {
@@ -101,7 +100,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Interceptor getPostInterceptor() {
         return postInterceptor;
@@ -114,7 +113,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setPostInterceptor(Interceptor postInterceptor) {
         this.postInterceptor = postInterceptor;
@@ -127,7 +126,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public Interceptor getPreInterceptor() {
         return preInterceptor;
@@ -140,7 +139,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @see Interceptor
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public void setPreInterceptor(Interceptor preInterceptor) {
         this.preInterceptor = preInterceptor;
@@ -228,10 +227,10 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @return subroutine text view.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     public String print() {
-        Interviewer interviewer = new ParametersPrinter();
+        Interviewer interviewer = new ParametersPrinter("", "\t");
         interview(interviewer);
         return String.format("%s {\r\n%s\r\n}", getName(), interviewer);
     }
@@ -254,7 +253,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @see #getPostInterceptor()
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void after(Connection connection) throws SQLException {
         intercept(connection, getPostInterceptor());
@@ -268,7 +267,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @see #getPreInterceptor()
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void before(Connection connection) throws SQLException {
         intercept(connection, getPreInterceptor());
@@ -281,7 +280,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      * @param parametersNumber subroutine parameters number.
      * @return SQL statement string.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected abstract String createSql(String name, int parametersNumber);
 
@@ -296,7 +295,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      * @see Box
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void input(int index, Box<?> value, Integer type,
             Converter encoder) {
@@ -314,7 +313,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      * @see Box
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void input(String name, Box<?> value, Integer type,
             Converter encoder) {
@@ -328,7 +327,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @see Interviewer
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void interview(Interviewer interviewer) {
         for (Object key : manager.getKeys()) {
@@ -337,11 +336,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
             Box<Object> output = parameter.getOutput();
             String struct = parameter.getStruct();
             Integer type = parameter.getType();
-            if (key instanceof Integer) {
-                interviewer.perform((Integer) key, input, output, type, struct);
-            } else {
-                interviewer.perform((String) key, input, output, type, struct);
-            }
+            interviewer.perform(key, input, output, type, struct);
         }
     }
 
@@ -357,7 +352,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      * @see Box
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected Box<Object> output(int index, int type, String struct,
             Converter decoder) {
@@ -376,7 +371,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      * @see Box
      * @see Converter
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected Box<Object> output(String name, int type, String struct,
             Converter decoder) {
@@ -388,7 +383,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @param index parameter index.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void remove(int index) {
         manager.remove(index);
@@ -399,7 +394,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @param name parameter name.
      *
-     * @since v1.0
+     * @since v1.0.0
      */
     protected void remove(String name) {
         manager.remove(name);
@@ -408,7 +403,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     private void intercept(Connection connection, Interceptor interceptor)
             throws SQLException {
         if (interceptor != null) {
-            interceptor.perform(connection, null);
+            interceptor.perform(connection, this);
         }
     }
 }

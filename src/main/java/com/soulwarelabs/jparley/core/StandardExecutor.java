@@ -65,13 +65,19 @@ public class StandardExecutor implements Executor, Serializable {
     private static void call(StandardExecutor executor, Connection connection,
             Subroutine ... subroutines) throws SQLException {
         if (executor != null) {
-            executor.before(connection);
+            executor.before(connection, null);
         }
         for (Subroutine subroutine : subroutines) {
+            if (executor != null) {
+                executor.before(connection, subroutine);
+            }
             subroutine.execute(connection);
+            if (executor != null) {
+                executor.after(connection, subroutine);
+            }
         }
         if (executor != null) {
-            executor.after(connection);
+            executor.after(connection, null);
         }
     }
 
@@ -238,34 +244,38 @@ public class StandardExecutor implements Executor, Serializable {
      * Intercepts SQL workflow after subroutines are executed.
      *
      * @param connection SQL database connection.
+     * @param target target subroutine for interception (optional).
      * @throws SQLException if error occurs while perform interception.
      *
      * @see #getPostInterceptor()
      *
      * @since v1.0.0
      */
-    protected void after(Connection connection) throws SQLException {
-        intercept(connection, getPostInterceptor());
+    protected void after(Connection connection, Subroutine target)
+            throws SQLException {
+        intercept(connection, getPostInterceptor(), target);
     }
 
     /**
      * Intercepts SQL workflow before subroutines are executed.
      *
      * @param connection SQL database connection.
+     * @param target target subroutine for interception (optional).
      * @throws SQLException if error occurs while perform interception.
      *
      * @see #getPreInterceptor()
      *
      * @since v1.0.0
      */
-    protected void before(Connection connection) throws SQLException {
-        intercept(connection, getPreInterceptor());
+    protected void before(Connection connection, Subroutine target)
+            throws SQLException {
+        intercept(connection, getPreInterceptor(), target);
     }
 
-    private void intercept(Connection connection, Interceptor interceptor)
-            throws SQLException {
+    private void intercept(Connection connection, Interceptor interceptor,
+            Subroutine target) throws SQLException {
         if (interceptor != null) {
-            interceptor.perform(connection, null);
+            interceptor.perform(connection, target);
         }
     }
 }

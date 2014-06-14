@@ -4,7 +4,7 @@
  *
  * File:     ParametersPrinter.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.01, 11 June 2014
+ * Revision: 1.02, 14 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -39,7 +39,7 @@ import com.soulwarelabs.jcommons.Box;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 11 June 2014
+ * @version 14 June 2014
  */
 public class ParametersPrinter implements Interviewer, Serializable {
 
@@ -57,35 +57,53 @@ public class ParametersPrinter implements Interviewer, Serializable {
     @Override
     public void perform(Object key, Box<?> input, Box<Object> output,
             Integer type, String struct) {
-        StringBuilder line = new StringBuilder();
-        line.append(key);
-        line.append(" = ");
-        line.append(input);
-        line.append("/");
-        line.append(output);
+        StringBuilder line = new StringBuilder().append(key).append(" = ");
+        if (input == null) {
+            line.append(output);
+        } else {
+            if (output == null) {
+                line.append(input);
+            } else {
+                line.append(input).append(" / ").append(output);
+            }
+        }
         line.append(" (");
-        line.append(type);
-        line.append("/");
-        line.append(struct);
-        line.append("}");
+        line.append(getTypeText(type));
+        if (struct != null) {
+            line.append(" / ").append(struct);
+        }
+        line.append(")");
         parameters.add(line);
     }
 
     /**
-     * Gets a text view of the printer and resets it.
+     * Gets a text view of the printer.
      *
      * @return printer text view.
      *
      * @since v1.0.0
      */
     public StringBuilder print() {
-        StringBuilder result = new StringBuilder();
+        return print("", "");
+    }
+
+    /**
+     * Gets a text view of the printer.
+     *
+     * @param prefix prefix to the text view.
+     * @param linePrefix prefix to each line of the text view.
+     * @return printer text view.
+     *
+     * @since v1.0.0
+     */
+    public StringBuilder print(String prefix, String linePrefix) {
+        StringBuilder result = new StringBuilder(prefix);
         for (int index = 0; index < parameters.size(); index++) {
             StringBuilder line = parameters.get(index);
+            result.append(linePrefix);
             result.append(line);
             result.append(index < parameters.size() - 1 ? ",\r\n" : "");
         }
-        reset();
         return result;
     }
 
@@ -101,5 +119,17 @@ public class ParametersPrinter implements Interviewer, Serializable {
     @Override
     public String toString() {
         return print().toString();
+    }
+
+    /**
+     * Gets SQL type name by its code.
+     *
+     * @param type SQL type code.
+     * @return SQL type name.
+     *
+     * @since v1.0.0
+     */
+    protected Object getTypeText(int type) {
+        return type;
     }
 }

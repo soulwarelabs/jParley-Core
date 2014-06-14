@@ -4,7 +4,7 @@
  *
  * File:     StandardFunction.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.04, 11 June 2014
+ * Revision: 1.05, 14 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -41,11 +41,17 @@ import com.soulwarelabs.jparley.Function;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 11 June 2014
+ * @version 14 June 2014
  */
 public class StandardFunction extends StandardSubroutine implements Function {
 
-    private int counter;
+    /**
+     * Standard function result output parameter index.
+     *
+     * @since v1.0.0
+     */
+    public static final int RESULT_INDEX = 1;
+
     private Converter decoder;
     private int index;
     private String struct;
@@ -82,7 +88,6 @@ public class StandardFunction extends StandardSubroutine implements Function {
         this.index = 1;
         this.type = type;
         this.value = new Box<Object>();
-        resetCounter();
     }
 
     /**
@@ -168,26 +173,11 @@ public class StandardFunction extends StandardSubroutine implements Function {
     }
 
     @Override
-    public void in(Object value) {
-        input(counter++, new Box<Object>(value), null, null);
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        resetCounter();
-    }
-
-    @Override
     protected String createSql(String name, int parametersNumber) {
         StringBuilder parameters = new StringBuilder();
         for (int i = 1; i <= parametersNumber - 1; i++) {
             parameters.append(i < parametersNumber - 1 ? "?," : "?");
         }
         return String.format("{? = call %s(%s)}", name, parameters);
-    }
-
-    private void resetCounter() {
-        counter = index + 1;
     }
 }

@@ -4,7 +4,7 @@
  *
  * File:     StandardExecutor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.11, 11 June 2014
+ * Revision: 1.12, 14 June 2014
  * Created:  08 February 2014
  * Author:   Ilya Gubarev
  *
@@ -42,7 +42,7 @@ import com.soulwarelabs.jparley.Subroutine;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 11 June 2014
+ * @version 14 June 2014
  */
 public class StandardExecutor implements Executor, Serializable {
 
@@ -206,13 +206,25 @@ public class StandardExecutor implements Executor, Serializable {
         }
     }
 
-    @Override
+    /**
+     * Executes specified SQL stored function and resets it.
+     *
+     * @param function SQL function to be executed.
+     * @param parameters initial values of function input parameters (optional).
+     * @return function result (optional).
+     * @throws SQLException if error occurs while executing the function.
+     *
+     * @see Function
+     *
+     * @since v1.0.0
+     */
     public Object call(Function function, Object ... parameters)
             throws SQLException {
         try {
             if (parameters != null) {
+                int counter = StandardFunction.RESULT_INDEX;
                 for (Object parameter : parameters) {
-                    function.in(parameter);
+                    function.in(++counter, parameter);
                 }
             }
             call((Subroutine) function);

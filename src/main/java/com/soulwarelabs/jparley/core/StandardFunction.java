@@ -53,7 +53,6 @@ public class StandardFunction extends StandardSubroutine implements Function {
     public static final int RESULT_INDEX = 1;
 
     private Converter decoder;
-    private int index;
     private String struct;
     private int type;
     private Box<Object> value;
@@ -85,7 +84,6 @@ public class StandardFunction extends StandardSubroutine implements Function {
     public StandardFunction(String name, int type, Interceptor preInterceptor,
             Interceptor postInterceptor) {
         super(name, preInterceptor, postInterceptor);
-        this.index = 1;
         this.type = type;
         this.value = new Box<Object>();
     }
@@ -167,9 +165,9 @@ public class StandardFunction extends StandardSubroutine implements Function {
 
     @Override
     public void execute(Connection connection) throws SQLException {
-        output(index, getType(), getStruct(), getDecoder());
+        output(RESULT_INDEX, getType(), getStruct(), getDecoder());
         super.execute(connection);
-        remove(index);
+        remove(RESULT_INDEX);
     }
 
     @Override

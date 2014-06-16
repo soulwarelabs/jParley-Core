@@ -4,7 +4,7 @@
  *
  * File:     StandardExecutor.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.12, 14 June 2014
+ * Revision: 1.13, 16 June 2014
  * Created:  08 February 2014
  * Author:   Ilya Gubarev
  *
@@ -42,7 +42,7 @@ import com.soulwarelabs.jparley.Subroutine;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 14 June 2014
+ * @version 16 June 2014
  */
 public class StandardExecutor implements Executor, Serializable {
 
@@ -62,22 +62,28 @@ public class StandardExecutor implements Executor, Serializable {
         call(null, connection, subroutines);
     }
 
+    private static void after(StandardExecutor executor, Connection connection,
+            Subroutine subroutine) throws SQLException {
+        if (executor != null) {
+            executor.after(connection, subroutine);
+        }
+    }
+
     private static void call(StandardExecutor executor, Connection connection,
             Subroutine ... subroutines) throws SQLException {
-        if (executor != null) {
-            executor.before(connection, null);
-        }
+        before(executor, connection, null);
         for (Subroutine subroutine : subroutines) {
-            if (executor != null) {
-                executor.before(connection, subroutine);
-            }
+            before(executor, connection, subroutine);
             subroutine.execute(connection);
-            if (executor != null) {
-                executor.after(connection, subroutine);
-            }
+            after(executor, connection, subroutine);
         }
+        after(executor, connection, null);
+    }
+
+    private static void before(StandardExecutor executor, Connection connection,
+            Subroutine subroutine) throws SQLException {
         if (executor != null) {
-            executor.after(connection, null);
+            executor.before(connection, subroutine);
         }
     }
 

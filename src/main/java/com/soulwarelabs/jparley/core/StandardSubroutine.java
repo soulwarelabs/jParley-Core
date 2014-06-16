@@ -4,7 +4,7 @@
  *
  * File:     StandardSubroutine.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.09, 14 June 2014
+ * Revision: 1.10, 16 June 2014
  * Created:  10 March 2014
  * Author:   Ilya Gubarev
  *
@@ -44,7 +44,7 @@ import com.soulwarelabs.jparley.utility.Statement;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 14 June 2014
+ * @version 16 June 2014
  */
 public abstract class StandardSubroutine implements Serializable, Subroutine {
 
@@ -223,6 +223,28 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     /**
+     * Processes registered parameters with specified processor.
+     *
+     * @param interviewer parameters processor.
+     *
+     * @see Interviewer
+     *
+     * @since v1.0.0
+     */
+    public void interview(Interviewer interviewer) {
+        for (Object key : manager.getKeys()) {
+            Parameter parameter = manager.getParameter(key);
+            Box<?> input = parameter.getInput();
+            input = input != null ? new Box<Object>(input.getValue()) : null;
+            Box<Object> output = parameter.getOutput();
+            output = output != null ? new Box<Object>(output.getValue()) : null;
+            String struct = parameter.getStruct();
+            Integer type = parameter.getType();
+            interviewer.perform(key, input, output, type, struct);
+        }
+    }
+
+    /**
      * Gets a text view of the subroutine.
      *
      * @return subroutine text view.
@@ -233,6 +255,28 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         Interviewer interviewer = new ParametersPrinter("", "\t");
         interview(interviewer);
         return String.format("%s {\r\n%s\r\n}", getName(), interviewer);
+    }
+
+    /**
+     * Removes registered subroutine parameter
+     *
+     * @param index parameter index.
+     *
+     * @since v1.0.0
+     */
+    public void remove(int index) {
+        manager.remove(index);
+    }
+
+    /**
+     * Removes registered subroutine parameter
+     *
+     * @param name parameter name.
+     *
+     * @since v1.0.0
+     */
+    public void remove(String name) {
+        manager.remove(name);
     }
 
     @Override
@@ -321,26 +365,6 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     /**
-     * Processes registered parameters with specified processor.
-     *
-     * @param interviewer parameters processor.
-     *
-     * @see Interviewer
-     *
-     * @since v1.0.0
-     */
-    protected void interview(Interviewer interviewer) {
-        for (Object key : manager.getKeys()) {
-            Parameter parameter = manager.getParameter(key);
-            Box<?> input = parameter.getInput();
-            Box<Object> output = parameter.getOutput();
-            String struct = parameter.getStruct();
-            Integer type = parameter.getType();
-            interviewer.perform(key, input, output, type, struct);
-        }
-    }
-
-    /**
      * Registers a new output parameter.
      *
      * @param index parameter index.
@@ -376,28 +400,6 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     protected Box<Object> output(String name, int type, String struct,
             Converter decoder) {
         return manager.out(name, type, struct, decoder);
-    }
-
-    /**
-     * Removes registered subroutine parameter
-     *
-     * @param index parameter index.
-     *
-     * @since v1.0.0
-     */
-    protected void remove(int index) {
-        manager.remove(index);
-    }
-
-    /**
-     * Removes registered subroutine parameter
-     *
-     * @param name parameter name.
-     *
-     * @since v1.0.0
-     */
-    protected void remove(String name) {
-        manager.remove(name);
     }
 
     private void intercept(Connection connection, Interceptor interceptor)

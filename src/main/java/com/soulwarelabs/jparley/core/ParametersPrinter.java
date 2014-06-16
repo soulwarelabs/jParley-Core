@@ -4,7 +4,7 @@
  *
  * File:     ParametersPrinter.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.02, 14 June 2014
+ * Revision: 1.03, 16 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -39,7 +39,7 @@ import com.soulwarelabs.jcommons.Box;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 14 June 2014
+ * @version 16 June 2014
  */
 public class ParametersPrinter implements Interviewer, Serializable {
 
@@ -75,18 +75,19 @@ public class ParametersPrinter implements Interviewer, Serializable {
             Integer type, String struct) {
         StringBuilder line = new StringBuilder().append(key).append(" = ");
         if (input == null) {
-            line.append(output);
+            line.append(getValueText(output));
         } else {
             if (output == null) {
-                line.append(input);
+                line.append(getValueText(input));
             } else {
-                line.append(input).append(" / ").append(output);
+                line.append(getValueText(input));
+                line.append(" / ").append(getValueText(output));
             }
         }
-        line.append(" (");
+        line.append(" (type: ");
         line.append(getTypeText(type));
         if (struct != null) {
-            line.append(" / ").append(struct);
+            line.append(", structure: ").append(struct);
         }
         line.append(")");
         parameters.add(line);
@@ -134,5 +135,21 @@ public class ParametersPrinter implements Interviewer, Serializable {
      */
     protected Object getTypeText(int type) {
         return type;
+    }
+
+    /**
+     * Gets parameter value text representation.
+     *
+     * @param boxed boxed parameter value.
+     * @return value text representation.
+     *
+     * @since v1.0.0
+     */
+    protected Object getValueText(Box<?> boxed) {
+        Object value = boxed != null ? boxed.getValue() : null;
+        if (value == null || value instanceof Number) {
+            return value;
+        }
+        return String.format("\"%s\"", value);
     }
 }

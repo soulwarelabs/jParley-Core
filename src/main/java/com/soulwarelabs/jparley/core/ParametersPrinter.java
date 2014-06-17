@@ -4,7 +4,7 @@
  *
  * File:     ParametersPrinter.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.03, 16 June 2014
+ * Revision: 1.04, 16 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -84,12 +84,14 @@ public class ParametersPrinter implements Interviewer, Serializable {
                 line.append(" / ").append(getValueText(output));
             }
         }
-        line.append(" (type: ");
-        line.append(getTypeText(type));
-        if (struct != null) {
-            line.append(", structure: ").append(struct);
+        if (type != null) {
+            line.append(" (");
+            line.append(getTypeText(type));
+            if (struct != null) {
+                line.append(", ").append(struct);
+            }
+            line.append(")");
         }
-        line.append(")");
         parameters.add(line);
     }
 
@@ -134,7 +136,7 @@ public class ParametersPrinter implements Interviewer, Serializable {
      * @since v1.0.0
      */
     protected Object getTypeText(int type) {
-        return type;
+        return String.format("type: %s", type);
     }
 
     /**

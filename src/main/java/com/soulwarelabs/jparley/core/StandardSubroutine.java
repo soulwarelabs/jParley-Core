@@ -44,7 +44,7 @@ import com.soulwarelabs.jparley.utility.Statement;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 June 2014
+ * @version 17 June 2014
  */
 public abstract class StandardSubroutine implements Serializable, Subroutine {
 
@@ -168,17 +168,6 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     @Override
-    public void in(String name, Box<?> value) {
-        value = value != null ? value : new Box<Object>();
-        input(name, value, null, null);
-    }
-
-    @Override
-    public void in(String name, Object value) {
-        input(name, new Box<Object>(value), null, null);
-    }
-
-    @Override
     public void in(int index, Box<?> value, Integer type) {
         value = value != null ? value : new Box<Object>();
         input(index, value, type, null);
@@ -187,17 +176,6 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     @Override
     public void in(int index, Object value, Integer type) {
         input(index, new Box<Object>(value), type, null);
-    }
-
-    @Override
-    public void in(String name, Box<?> value, Integer type) {
-        value = value != null ? value : new Box<Object>();
-        input(name, value, type, null);
-    }
-
-    @Override
-    public void in(String name, Object value, Integer type) {
-        input(name, new Box<Object>(value), type, null);
     }
 
     @Override
@@ -212,14 +190,14 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     }
 
     @Override
-    public void in(String name, Box<?> value, Converter encoder) {
+    public void in(int index, Box<?> value, Integer type, Converter encoder) {
         value = value != null ? value : new Box<Object>();
-        input(name, value, null, encoder);
+        input(index, value, type, encoder);
     }
 
     @Override
-    public void in(String name, Object value, Converter encoder) {
-        input(name, new Box<Object>(value), null, encoder);
+    public void in(int index, Object value, Integer type, Converter encoder) {
+        input(index, new Box<Object>(value), type, encoder);
     }
 
     /**
@@ -257,30 +235,13 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
         return String.format("%s {\r\n%s\r\n}", getName(), interviewer);
     }
 
-    /**
-     * Removes registered subroutine parameter
-     *
-     * @param index parameter index.
-     *
-     * @since v1.0.0
-     */
+    @Override
     public void remove(int index) {
         manager.remove(index);
     }
 
-    /**
-     * Removes registered subroutine parameter
-     *
-     * @param name parameter name.
-     *
-     * @since v1.0.0
-     */
-    public void remove(String name) {
-        manager.remove(name);
-    }
-
     @Override
-    public void reset() {
+    public void removeAll() {
         manager.removeAll();
     }
 
@@ -400,6 +361,10 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
     protected Box<Object> output(String name, int type, String struct,
             Converter decoder) {
         return manager.out(name, type, struct, decoder);
+    }
+
+    protected void remove(String name) {
+        manager.remove(name);
     }
 
     private void intercept(Connection connection, Interceptor interceptor)

@@ -4,7 +4,7 @@
  *
  * File:     StandardFunction.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.05, 14 June 2014
+ * Revision: 1.06, 17 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -41,7 +41,7 @@ import com.soulwarelabs.jparley.Function;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 14 June 2014
+ * @version 17 June 2014
  */
 public class StandardFunction extends StandardSubroutine implements Function {
 
@@ -88,84 +88,44 @@ public class StandardFunction extends StandardSubroutine implements Function {
         this.value = new Box<Object>();
     }
 
-    /**
-     * Gets function result SQL data decoder (optional).
-     *
-     * @return SQL data decoder (optional).
-     *
-     * @see Converter
-     *
-     * @since v1.0.0
-     */
+    @Override
     public Converter getDecoder() {
         return decoder;
     }
 
-    /**
-     * Sets function result SQL data decoder (optional).
-     *
-     * @param decoder SQL data decoder (optional).
-     *
-     * @see Converter
-     *
-     * @since v1.0.0
-     */
+    @Override
     public void setDecoder(Converter decoder) {
         this.decoder = decoder;
     }
 
     @Override
-    public Object getResult() {
-        return value.getValue();
+    public Box<Object> getResult() {
+        return value;
     }
 
-    /**
-     * Gets function result SQL structure name.
-     *
-     * @return SQL structure name (optional).
-     *
-     * @since v1.0.0
-     */
+    @Override
     public String getStruct() {
         return struct;
     }
 
-    /**
-     * Sets function result SQL structure name.
-     *
-     * @param struct SQL structure name (optional).
-     *
-     * @since v1.0.0
-     */
+    @Override
     public void setStruct(String struct) {
         this.struct = struct;
     }
 
-    /**
-     * Gets function result SQL type code.
-     *
-     * @return SQL type code.
-     *
-     * @since v1.0.0
-     */
+    @Override
     public int getType() {
         return type;
     }
 
-    /**
-     * Sets function result SQL type code.
-     *
-     * @param type SQL type code.
-     *
-     * @since v1.0.0
-     */
+    @Override
     public void setType(int type) {
         this.type = type;
     }
 
     @Override
     public void execute(Connection connection) throws SQLException {
-        output(RESULT_INDEX, getType(), getStruct(), getDecoder());
+        value = output(RESULT_INDEX, getType(), getStruct(), getDecoder());
         super.execute(connection);
         remove(RESULT_INDEX);
     }

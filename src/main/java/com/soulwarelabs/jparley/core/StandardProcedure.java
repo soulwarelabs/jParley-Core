@@ -70,6 +70,50 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
     }
 
     @Override
+    public void in(String name, Box<?> value) {
+        value = value != null ? value : new Box<Object>();
+        input(name, value, null, null);
+    }
+
+    @Override
+    public void in(String name, Object value) {
+        input(name, new Box<Object>(value), null, null);
+    }
+
+    @Override
+    public void in(String name, Box<?> value, Integer type) {
+        value = value != null ? value : new Box<Object>();
+        input(name, value, type, null);
+    }
+
+    @Override
+    public void in(String name, Object value, Integer type) {
+        input(name, new Box<Object>(value), type, null);
+    }
+
+    @Override
+    public void in(String name, Box<?> value, Converter encoder) {
+        value = value != null ? value : new Box<Object>();
+        input(name, value, null, encoder);
+    }
+
+    @Override
+    public void in(String name, Object value, Converter encoder) {
+        input(name, new Box<Object>(value), null, encoder);
+    }
+
+    @Override
+    public void in(String name, Box<?> value, Integer type, Converter encoder) {
+        value = value != null ? value : new Box<Object>();
+        input(name, value, type, encoder);
+    }
+
+    @Override
+    public void in(String name, Object value, Integer type, Converter encoder) {
+        input(name, new Box<Object>(value), type, encoder);
+    }
+
+    @Override
     public Box<Object> out(int index, int type) {
         return output(index, type, null, null);
     }
@@ -109,6 +153,11 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
     public Box<Object> out(String name, int type, String struct,
             Converter decoder) {
         return output(name, type, struct, decoder);
+    }
+
+    @Override
+    public void remove(String name) {
+        super.remove(name);
     }
 
     @Override

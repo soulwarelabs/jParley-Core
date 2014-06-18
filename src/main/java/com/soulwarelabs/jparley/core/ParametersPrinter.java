@@ -4,7 +4,7 @@
  *
  * File:     ParametersPrinter.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.04, 16 June 2014
+ * Revision: 1.05, 18 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -39,7 +39,7 @@ import com.soulwarelabs.jcommons.Box;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 16 June 2014
+ * @version 18 June 2014
  */
 public class ParametersPrinter implements Interviewer, Serializable {
 
@@ -73,22 +73,20 @@ public class ParametersPrinter implements Interviewer, Serializable {
     @Override
     public void perform(Object key, Box<?> input, Box<Object> output,
             Integer type, String struct) {
-        StringBuilder line = new StringBuilder().append(key).append(" = ");
-        if (input == null) {
-            line.append(getValueText(output));
-        } else {
-            if (output == null) {
-                line.append(getValueText(input));
-            } else {
-                line.append(getValueText(input));
-                line.append(" / ").append(getValueText(output));
-            }
+        StringBuilder line = new StringBuilder();
+        line.append(getKeyText(key)).append(": ");
+        if (input != null) {
+            line.append("IN = ").append(getValueText(input));
+            line.append(output != null ? ", " : " ");
+        }
+        if (output != null) {
+            line.append("OUT = ").append(getValueText(output)).append(" ");
         }
         if (type != null) {
-            line.append(" (");
+            line.append("(");
             line.append(getTypeText(type));
             if (struct != null) {
-                line.append(", ").append(struct);
+                line.append(", ").append(getStructText(struct));
             }
             line.append(")");
         }
@@ -108,7 +106,7 @@ public class ParametersPrinter implements Interviewer, Serializable {
             StringBuilder line = parameters.get(index);
             result.append(linePrefix);
             result.append(line);
-            result.append(index < parameters.size() - 1 ? ",\r\n" : "");
+            result.append(index < parameters.size() - 1 ? ";\r\n" : "");
         }
         return result;
     }
@@ -128,6 +126,33 @@ public class ParametersPrinter implements Interviewer, Serializable {
     }
 
     /**
+     * Gets parameter key caption.
+     *
+     * @param key parameter key.
+     * @return parameter key caption.
+     *
+     * @since v1.0.0
+     */
+    protected Object getKeyText(Object key) {
+        if (!(key instanceof Integer)) {
+            key = String.format("'%s'", key);
+        }
+        return String.format("param %s" , key);
+    }
+
+    /**
+     * Gets adapted SQL structure name.
+     *
+     * @param struct SQL structure name.
+     * @return adapted SQL structure name.
+     *
+     * @since v1.0.0
+     */
+    protected Object getStructText(String struct) {
+        return struct;
+    }
+
+    /**
      * Gets SQL type name by its code.
      *
      * @param type SQL type code.
@@ -136,7 +161,7 @@ public class ParametersPrinter implements Interviewer, Serializable {
      * @since v1.0.0
      */
     protected Object getTypeText(int type) {
-        return String.format("type: %s", type);
+        return String.format("type = %s", type);
     }
 
     /**
@@ -148,7 +173,7 @@ public class ParametersPrinter implements Interviewer, Serializable {
      * @since v1.0.0
      */
     protected Object getValueText(Box<?> boxed) {
-        Object value = boxed != null ? boxed.getValue() : null;
+        Object value = boxed.getValue();
         if (value == null || value instanceof Number) {
             return value;
         }

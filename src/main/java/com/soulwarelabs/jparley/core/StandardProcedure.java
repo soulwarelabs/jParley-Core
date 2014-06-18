@@ -4,7 +4,7 @@
  *
  * File:     StandardProcedure.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.05, 11 June 2014
+ * Revision: 1.06, 18 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -38,7 +38,7 @@ import com.soulwarelabs.jparley.Procedure;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 11 June 2014
+ * @version 18 June 2014
  */
 public class StandardProcedure extends StandardSubroutine implements Procedure {
 
@@ -153,6 +153,13 @@ public class StandardProcedure extends StandardSubroutine implements Procedure {
     public Box<Object> out(String name, int type, String struct,
             Converter decoder) {
         return output(name, type, struct, decoder);
+    }
+
+    @Override
+    public String print() {
+        ParametersPrinter printer = new ParametersPrinter("", "    ");
+        interview(printer);
+        return String.format("procedure '%s' {\r\n%s\r\n}", getName(), printer);
     }
 
     @Override

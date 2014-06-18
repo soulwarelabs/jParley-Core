@@ -4,7 +4,7 @@
  *
  * File:     StandardSubroutine.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.10, 16 June 2014
+ * Revision: 1.11, 18 June 2014
  * Created:  10 March 2014
  * Author:   Ilya Gubarev
  *
@@ -44,7 +44,7 @@ import com.soulwarelabs.jparley.utility.Statement;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 17 June 2014
+ * @version 18 June 2014
  */
 public abstract class StandardSubroutine implements Serializable, Subroutine {
 
@@ -229,11 +229,7 @@ public abstract class StandardSubroutine implements Serializable, Subroutine {
      *
      * @since v1.0.0
      */
-    public String print() {
-        Interviewer interviewer = new ParametersPrinter("", "\t");
-        interview(interviewer);
-        return String.format("%s {\r\n%s\r\n}", getName(), interviewer);
-    }
+    public abstract String print();
 
     @Override
     public void remove(int index) {

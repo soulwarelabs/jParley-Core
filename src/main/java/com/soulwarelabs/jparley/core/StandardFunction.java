@@ -4,7 +4,7 @@
  *
  * File:     StandardFunction.java
  * Folder:   /.../com/soulwarelabs/jparley/core
- * Revision: 1.06, 17 June 2014
+ * Revision: 1.07, 18 June 2014
  * Created:  16 March 2014
  * Author:   Ilya Gubarev
  *
@@ -41,7 +41,7 @@ import com.soulwarelabs.jparley.Function;
  * @since v1.0.0
  *
  * @author Ilya Gubarev
- * @version 17 June 2014
+ * @version 18 June 2014
  */
 public class StandardFunction extends StandardSubroutine implements Function {
 
@@ -128,6 +128,13 @@ public class StandardFunction extends StandardSubroutine implements Function {
         value = output(RESULT_INDEX, getType(), getStruct(), getDecoder());
         super.execute(connection);
         remove(RESULT_INDEX);
+    }
+
+    @Override
+    public String print() {
+        ParametersPrinter printer = new ParametersPrinter("", "    ");
+        interview(printer);
+        return String.format("function '%s' {\r\n%s\r\n}", getName(), printer);
     }
 
     @Override

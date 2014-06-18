@@ -6,7 +6,7 @@
 
     File:     pom.xml
     Folder:   /
-    Revision: 1.08, 16 June 2014
+    Revision: 1.09, 18 June 2014
     Created:  05 March 2014
     Author:   Ilya Gubarev
 
@@ -83,7 +83,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <versions.java.source>1.5</versions.java.source>
         <versions.java.target>1.5</versions.java.target>
-        <versions.libs.jparley.utility>1.0.0-beta2-SNAPSHOT</versions.libs.jparley.utility>
+        <versions.libs.jparley.utility>1.0.0-beta2</versions.libs.jparley.utility>
         <versions.plugins.compiler>3.1</versions.plugins.compiler>
         <versions.plugins.gpg>1.5</versions.plugins.gpg>
         <versions.plugins.javadoc>2.9.1</versions.plugins.javadoc>

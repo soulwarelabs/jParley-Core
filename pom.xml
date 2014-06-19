@@ -6,7 +6,7 @@
 
     File:     pom.xml
     Folder:   /
-    Revision: 1.09, 18 June 2014
+    Revision: 1.10, 19 June 2014
     Created:  05 March 2014
     Author:   Ilya Gubarev
 
@@ -40,7 +40,7 @@
 
     <groupId>com.soulwarelabs.jparley</groupId>
     <artifactId>jparley-core</artifactId>
-    <version>1.0.0-beta1-SNAPSHOT</version>
+    <version>1.0.0-beta1</version>
     <packaging>jar</packaging>
 
     <name>jParley-Core</name>
